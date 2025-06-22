@@ -37,6 +37,7 @@ def brain_ring_moderator_reset_pause_push_button_handler(obj: MainWindow):
             f'{BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN.value}',
         )
         obj.clear_brain_ring_info_labels()
+        obj.reset_all_enabled_players_widget_display()
 
 
 def brain_ring_moderator_reset_round_push_button_handler(obj: MainWindow):
@@ -72,9 +73,11 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
     elif obj.current_game.status == BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED:
         # player was not first who pushed the button to give an answer
         if obj.current_game.first_button_pressed_time is not None:
-            current_time = QTime.currentTime()
-            diff_time = round((obj.current_game.first_button_pressed_time.msecsTo(current_time) / 1000.0), 3)
-            obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, diff_time=diff_time)
+            if not player.is_already_displayed_on_widget:
+                current_time = QTime.currentTime()
+                diff_time = round((obj.current_game.first_button_pressed_time.msecsTo(current_time) / 1000.0), 3)
+                obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, diff_time=diff_time)
+                player.is_already_displayed_on_widget = True
 
     elif all([
             obj.current_game.status == BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN,

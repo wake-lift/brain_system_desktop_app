@@ -26,4 +26,9 @@ DEFAULT_CONFIG: Dict[str, Dict[str, str | int | bool]] = {
         'black_button_enabled': False,
         'black_button_player_name': 'Black Team',
     },
+    'MODERATOR_BUTTONS': {
+        'brain_ring_start_resume_key': 'c',
+        'brain_ring_reset_pause_key': 'z',
+        'brain_ring_reset_round_key': 'x'
+    }
 }

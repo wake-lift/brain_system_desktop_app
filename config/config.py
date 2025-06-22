@@ -1,7 +1,14 @@
 from configparser import ConfigParser
 from pathlib import Path
 from typing import List
-from config.config_parser import CONFIG_FILE_PATH, brain_ring_config, buttons_config, config, general_config
+from config.config_parser import (
+    CONFIG_FILE_PATH,
+    brain_ring_config,
+    buttons_config,
+    config,
+    general_config,
+    moderator_buttons_config,
+)
 from config.default_config import DEFAULT_CONFIG
 
 
@@ -16,38 +23,50 @@ class AppConfig:
         self.red_button_enabled: bool = buttons_config.getboolean(
             option='red_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['red_button_enabled'],
         )
-        self.red_button_player_name: int = buttons_config.get(
+        self.red_button_player_name: str = buttons_config.get(
             option='red_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['red_button_player_name'],
         )
         self.green_button_enabled: bool = buttons_config.getboolean(
             option='green_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['green_button_enabled'],
         )
-        self.green_button_player_name: int = buttons_config.get(
+        self.green_button_player_name: str = buttons_config.get(
             option='green_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['green_button_player_name'],
         )
         self.blue_button_enabled: bool = buttons_config.getboolean(
             option='blue_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['blue_button_enabled'],
         )
-        self.blue_button_player_name: int = buttons_config.get(
+        self.blue_button_player_name: str = buttons_config.get(
             option='blue_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['blue_button_player_name'],
         )
         self.yellow_button_enabled: bool = buttons_config.getboolean(
             option='yellow_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['yellow_button_enabled'],
         )
-        self.yellow_button_player_name: int = buttons_config.get(
+        self.yellow_button_player_name: str = buttons_config.get(
             option='yellow_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['yellow_button_player_name'],
         )
         self.white_button_enabled: bool = buttons_config.getboolean(
             option='white_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['white_button_enabled'],
         )
-        self.white_button_player_name: int = buttons_config.get(
+        self.white_button_player_name: str = buttons_config.get(
             option='white_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['white_button_player_name'],
         )
         self.black_button_enabled: bool = buttons_config.getboolean(
             option='black_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['black_button_enabled'],
         )
-        self.black_button_player_name: int = buttons_config.get(
+        self.black_button_player_name: str = buttons_config.get(
             option='black_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['black_button_player_name'],
+        )
+        self.brain_ring_start_resume_key: str = moderator_buttons_config.get(
+            option='brain_ring_start_resume_key',
+            fallback=DEFAULT_CONFIG['MODERATOR_BUTTONS']['brain_ring_start_resume_key'],
+        )
+        self.brain_ring_reset_pause_key: str = moderator_buttons_config.get(
+            option='brain_ring_reset_pause_key',
+            fallback=DEFAULT_CONFIG['MODERATOR_BUTTONS']['brain_ring_reset_pause_key'],
+        )
+        self.brain_ring_reset_round_key: str = moderator_buttons_config.get(
+            option='brain_ring_reset_round_key',
+            fallback=DEFAULT_CONFIG['MODERATOR_BUTTONS']['brain_ring_reset_round_key'],
         )
 
     def update_config_file(self) -> None:

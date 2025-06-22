@@ -38,7 +38,7 @@ from game_modes.brain_ring.handlers import (
     brain_ring_player_key_press_handler,
 )
 from game_modes.what_where_when.handlers import www_key_press_handler
-from keyboard.enums import PlayerPressedKeyEnum
+from keyboard.enums import ModeratorPressedKeyEnum, PlayerPressedKeyEnum
 from sounds.handlers import (
     pause_or_resume_audio_track_handler,
     select_audio_track_handler,
@@ -83,21 +83,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return GameTypeEnum.BRAIN_RING
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        try:
-            player: Player = self.MAP_BUTTONS_TO_ENABLED_PLAYERS[PlayerPressedKeyEnum(event.text())]
-        except (ValueError, KeyError):
-            return
+        pressed_key: str = event.text()
+        if pressed_key in {member.value for member in PlayerPressedKeyEnum}:
+            try:
+                player: Player = self.MAP_BUTTONS_TO_ENABLED_PLAYERS[PlayerPressedKeyEnum(pressed_key)]
+            except (KeyError):
+                return
+            else:
+                if self.game_type == GameTypeEnum.BRAIN_RING:
+                    brain_ring_player_key_press_handler(self, player)
+                elif self.game_type == GameTypeEnum.WWW:
+                    www_key_press_handler(self, player)
+                elif self.game_type == GameTypeEnum.ERUDITE:
+                    erudite_key_press_handler(self, player)
 
-        if self.game_type == GameTypeEnum.BRAIN_RING:
-            brain_ring_player_key_press_handler(self, player)
-        elif self.game_type == GameTypeEnum.WWW:
-            www_key_press_handler(self, player)
-        elif self.game_type == GameTypeEnum.ERUDITE:
-            erudite_key_press_handler(self, player)
+        elif pressed_key in {member.value for member in ModeratorPressedKeyEnum}:
+            if self.game_type == GameTypeEnum.BRAIN_RING:
+                if ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.START_RESUME:
+                    brain_ring_moderator_start_resume_push_button_handler(self)
+                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_PAUSE:
+                    brain_ring_moderator_reset_pause_push_button_handler(self)
+                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_ROUND:
+                    brain_ring_moderator_reset_round_push_button_handler(self)
+            elif self.game_type == GameTypeEnum.WWW:
+                pass
+            elif self.game_type == GameTypeEnum.ERUDITE:
+                pass
 
     def reset_all_enabled_players(self):
         for player in self.enabled_players:
             player.is_blocked = False
+            player.is_already_displayed_on_widget = False
+
+    def reset_all_enabled_players_widget_display(self):
+        for player in self.enabled_players:
+            player.is_already_displayed_on_widget = False
 
     def play_sound_file(self, sound_file_name: SoundFilesEnum):
         path_to_file = Path(__file__).absolute().parent.parent / 'assets' / 'sounds' / sound_file_name.value

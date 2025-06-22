@@ -40,6 +40,7 @@ class Player():
                 self.is_enbled = obj.app_config.black_button_enabled
                 self.color = button_color.label
         self.is_blocked = False
+        self.is_already_displayed_on_widget = False
         self.MAP_PLAYER_COLOR_QCOLOR = {
             PlayerPressedKeyEnum.RED.label: Qt.GlobalColor.red,
             PlayerPressedKeyEnum.GREEN.label: Qt.GlobalColor.green,
