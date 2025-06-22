@@ -1,7 +1,8 @@
+from pathlib import Path
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtGui import QKeyEvent
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QLayout, QMainWindow
 
 from config.config import AppConfig
 from config.handlers import (
@@ -26,13 +27,18 @@ from config.handlers import (
 )
 from config.enums import GameTypeEnum, SoundFilesEnum
 from core.timer import CustomTimer
-from game_modes.handlers_brain_ring import (
-    brain_ring_reset_push_button_handler,
-    brain_ring_pause_resume_push_button_handler,
-    brain_ring_start_push_button_handler,
+from game_modes.brain_ring.game import BrainRingGame
+from game_modes.erudite.handlers import erudite_key_press_handler
+from game_modes.player import Player
+from game_modes.brain_ring.enums import BrainRingGameStatusEnum
+from game_modes.brain_ring.handlers import (
+    brain_ring_moderator_reset_pause_push_button_handler,
+    brain_ring_moderator_reset_round_push_button_handler,
+    brain_ring_moderator_start_resume_push_button_handler,
+    brain_ring_player_key_press_handler,
 )
-from keyboard.enums import PressedKeyEnum
-from keyboard.handlers import brain_ring_key_press_handler, erudite_key_press_handler, www_key_press_handler
+from game_modes.what_where_when.handlers import www_key_press_handler
+from keyboard.enums import PlayerPressedKeyEnum
 from sounds.handlers import (
     pause_or_resume_audio_track_handler,
     select_audio_track_handler,
@@ -54,22 +60,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        self.timer = CustomTimer(initial_time=self.app_config.brain_ring_round_time)
+        self.brain_ring_timer = CustomTimer(initial_time=self.app_config.brain_ring_round_time)
 
         self._setup_audio_player()
         self._populate_settings_widgets()
         self._setup_game_widgets()
         self._setup_settings_handlers()
         self._setup_main_window_buttons()
-
-
-        # self.main_window_brain_color_box_01.setStyleSheet("""
-        #     background-color: red;
-        #     border: 3px solid black;
-        # """)
-        # self.main_window_brain_color_box_01.hide()
-        # self.main_window_brain_color_box_01.show()
-
+        self._setup_game()
+        self.MAP_BUTTONS_TO_ENABLED_PLAYERS = self._setup_players()
+        self.enabled_players: list[Player] = list(self.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())
+        self._setup_brain_ring_info_labels()
 
     @property
     def game_type(self) -> GameTypeEnum:
@@ -83,18 +84,60 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         try:
-            pressed_key = PressedKeyEnum(event.text())
-        except ValueError:
+            player: Player = self.MAP_BUTTONS_TO_ENABLED_PLAYERS[PlayerPressedKeyEnum(event.text())]
+        except (ValueError, KeyError):
             return
 
         if self.game_type == GameTypeEnum.BRAIN_RING:
-            brain_ring_key_press_handler(self, pressed_key)
+            brain_ring_player_key_press_handler(self, player)
         elif self.game_type == GameTypeEnum.WWW:
-            www_key_press_handler(self, pressed_key)
+            www_key_press_handler(self, player)
         elif self.game_type == GameTypeEnum.ERUDITE:
-            erudite_key_press_handler(self, pressed_key)
+            erudite_key_press_handler(self, player)
 
-        # super().keyPressEvent(event)
+    def reset_all_enabled_players(self):
+        for player in self.enabled_players:
+            player.is_blocked = False
+
+    def play_sound_file(self, sound_file_name: SoundFilesEnum):
+        path_to_file = Path(__file__).absolute().parent.parent / 'assets' / 'sounds' / sound_file_name.value
+        audio_file = QUrl.fromLocalFile(str(path_to_file))
+        self.audio_player.setSource(audio_file)
+        self.audio_player.play()
+
+    def set_brain_ring_info_label(
+        self,
+        player: Player,
+        game_status: BrainRingGameStatusEnum,
+        remaining_time: int | None = None,
+        diff_time: float | None = None,
+    ):
+        for color_box, info_label in self.MAP_BRAIN_RING_INFO_LABELS.items():
+            if color_box.isHidden():
+                color_box.setStyleSheet(f'background-color: {player.color}; border: 3px solid black;')
+                if game_status == BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED:
+                    if remaining_time is not None:
+                        info_label.setStyleSheet('font-weight: bold;')
+                        info_label.setText(f'{player.name}: {remaining_time} sec')
+                    elif diff_time is not None:
+                        info_label.setText(f'{player.name}: + {diff_time} sec')
+                else:
+                    info_label.setText(f'{player.name}: {game_status.label}')
+                color_box.show()
+                info_label.show()
+                break
+
+    def clear_brain_ring_info_labels(self):
+        for color_box, info_label in self.MAP_BRAIN_RING_INFO_LABELS.items():
+            color_box.hide()
+            info_label.hide()
+
+    def clear_layout(self, layout: type[QLayout]):
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
 
     def _setup_audio_player(self):
         self.audio_player = QMediaPlayer()
@@ -147,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _setup_game_widgets(self):
         self.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
             parent=self.brain_ring_game_display_tab,
-            timer=self.timer,
+            timer=self.brain_ring_timer,
             audio_player=self.audio_player,
             audio_output=self.audio_output,
         )
@@ -204,12 +247,69 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reset_settings_button.clicked.connect(slot=lambda handler: reset_settings_button_handler(self))
 
     def _setup_main_window_buttons(self):
-        self.brain_ring_start_push_button.clicked.connect(
-            slot=lambda handler: brain_ring_start_push_button_handler(self),
+        self.brain_ring_moderator_start_resume_push_button.clicked.connect(
+            slot=lambda handler: brain_ring_moderator_start_resume_push_button_handler(self),
         )
-        self.brain_ring_pause_resume_push_button.clicked.connect(
-            slot=lambda handler: brain_ring_pause_resume_push_button_handler(self),
+        self.brain_ring_moderator_reset_pause_push_button.clicked.connect(
+            slot=lambda handler: brain_ring_moderator_reset_pause_push_button_handler(self),
         )
-        self.brain_ring_reset_push_button.clicked.connect(
-            slot=lambda handler: brain_ring_reset_push_button_handler(self),
+        self.brain_ring_moderator_reset_round_push_button.clicked.connect(
+            slot=lambda handler: brain_ring_moderator_reset_round_push_button_handler(self),
         )
+
+    def _setup_game(self):
+        if self.game_type == GameTypeEnum.BRAIN_RING:
+            self.current_game = BrainRingGame(
+                status=BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN,
+                is_false_start_active=False
+            )
+            self.moderator_game_status_label.setText(f'{BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
+        elif self.game_type == GameTypeEnum.WWW:
+            self.current_game = None
+        elif self.game_type == GameTypeEnum.ERUDITE:
+            self.current_game = None
+
+    def _setup_players(self):
+        self.red_player = Player(self, button_color=PlayerPressedKeyEnum.RED)
+        self.green_player = Player(self, button_color=PlayerPressedKeyEnum.GREEN)
+        self.yellow_player = Player(self, button_color=PlayerPressedKeyEnum.YELLOW)
+        self.blue_player = Player(self, button_color=PlayerPressedKeyEnum.BLUE)
+        self.white_player = Player(self, button_color=PlayerPressedKeyEnum.WHITE)
+        self.black_player = Player(self, button_color=PlayerPressedKeyEnum.BLACK)
+        all_players = [
+            self.red_player,
+            self.green_player,
+            self.yellow_player,
+            self.blue_player,
+            self.white_player,
+            self.black_player,
+        ]
+        MAP_BUTTONS_TO_ENABLED_PLAYERS: dict[PlayerPressedKeyEnum, Player] = {}
+        for pressed_key, player in zip(PlayerPressedKeyEnum, all_players):
+            if player.is_enbled:
+                MAP_BUTTONS_TO_ENABLED_PLAYERS[pressed_key] = player
+        return MAP_BUTTONS_TO_ENABLED_PLAYERS
+
+    def _setup_brain_ring_info_labels(self):
+        self.main_window_brain_color_box_01.hide()
+        self.main_window_brain_color_box_02.hide()
+        self.main_window_brain_color_box_03.hide()
+        self.main_window_brain_color_box_04.hide()
+        self.main_window_brain_color_box_05.hide()
+        self.main_window_brain_color_box_06.hide()
+        self.main_window_brain_color_box_06.hide()
+        self.main_window_brain_info_label_01.hide()
+        self.main_window_brain_info_label_02.hide()
+        self.main_window_brain_info_label_03.hide()
+        self.main_window_brain_info_label_04.hide()
+        self.main_window_brain_info_label_05.hide()
+        self.main_window_brain_info_label_06.hide()
+
+        self.MAP_BRAIN_RING_INFO_LABELS = {
+            self.main_window_brain_color_box_01: self.main_window_brain_info_label_01,
+            self.main_window_brain_color_box_02: self.main_window_brain_info_label_02,
+            self.main_window_brain_color_box_03: self.main_window_brain_info_label_03,
+            self.main_window_brain_color_box_04: self.main_window_brain_info_label_04,
+            self.main_window_brain_color_box_05: self.main_window_brain_info_label_05,
+            self.main_window_brain_color_box_06: self.main_window_brain_info_label_06,
+        }

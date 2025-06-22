@@ -115,15 +115,18 @@ def save_settings_button_handler(obj: MainWindow):
         acknowledge_box.setStandardButtons(QMessageBox.StandardButton.Ok)
         acknowledge_box.exec()
         obj.app_config = AppConfig()
-        obj.timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
+        obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
         obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
         obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
             parent=obj.brain_ring_game_display_tab,
-            timer=obj.timer,
+            timer=obj.brain_ring_timer,
             audio_player=obj.audio_player,
             audio_output=obj.audio_output,
         )
         obj.main_window_brain_info_timer_widget_vertical_layout.addWidget(obj.main_window_brain_info_timer_label)
+        obj._setup_game()
+        obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
+        obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())
 
 
 def reset_settings_button_handler(obj: MainWindow):
@@ -154,12 +157,15 @@ def reset_settings_button_handler(obj: MainWindow):
         acknowledge_box.exec()
         obj.app_config = AppConfig()
         obj._populate_settings_widgets()
-        obj.timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
+        obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
         obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
         obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
             parent=obj.brain_ring_game_display_tab,
-            timer=obj.timer,
+            timer=obj.brain_ring_timer,
             audio_player=obj.audio_player,
             audio_output=obj.audio_output,
         )
         obj.main_window_brain_info_timer_widget_vertical_layout.addWidget(obj.main_window_brain_info_timer_label)
+        obj._setup_game()
+        obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
+        obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())

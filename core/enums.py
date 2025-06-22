@@ -3,7 +3,7 @@ from typing import Self
 
 
 class StrLabelEnum(StrEnum):
-    def __new__(cls, value: str, label: str) -> Self:
+    def __new__(cls, value: str, label: str = None) -> Self:
         """Adds additional attribute "label" for each enum element."""
         obj = str.__new__(cls, value)
         obj._value_ = value

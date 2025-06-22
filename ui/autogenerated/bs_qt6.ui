@@ -357,6 +357,29 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
+             <widget class="QWidget" name="main_window_brain_blocked_players_indicator_widget" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="main_window_brain_blocked_players_indicator_widget_horizontal_layout"/>
+             </widget>
+            </item>
+            <item>
              <widget class="QWidget" name="main_window_brain_info_timer_widget" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -636,21 +659,6 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <item>
-             <widget class="QLabel" name="test_label">
-              <property name="font">
-               <font>
-                <pointsize>16</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
              <spacer name="www_tab_horizontal_spacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -895,7 +903,7 @@
                <string notr="true">background: #EFF0F1;</string>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="brain_ring_game_control_tab">
                <attribute name="title">
@@ -905,20 +913,48 @@
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_9">
                   <item>
-                   <widget class="QPushButton" name="brain_ring_start_push_button">
+                   <widget class="QLabel" name="moderator_game_status_label">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="minimumSize">
                      <size>
-                      <width>200</width>
-                      <height>50</height>
+                      <width>0</width>
+                      <height>15</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>30</height>
                      </size>
                     </property>
                     <property name="text">
-                     <string>Start</string>
+                     <string>Game status</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="brain_ring_pause_resume_push_button">
+                   <spacer name="horizontalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="brain_ring_moderator_start_resume_push_button">
                     <property name="minimumSize">
                      <size>
                       <width>200</width>
@@ -926,12 +962,12 @@
                      </size>
                     </property>
                     <property name="text">
-                     <string>Pause / Resume</string>
+                     <string>Start / Resume</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="brain_ring_reset_push_button">
+                   <widget class="QPushButton" name="brain_ring_moderator_reset_pause_push_button">
                     <property name="minimumSize">
                      <size>
                       <width>200</width>
@@ -939,7 +975,20 @@
                      </size>
                     </property>
                     <property name="text">
-                     <string>Reset</string>
+                     <string>Reset Pause</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="brain_ring_moderator_reset_round_push_button">
+                    <property name="minimumSize">
+                     <size>
+                      <width>200</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Reset Round</string>
                     </property>
                    </widget>
                   </item>

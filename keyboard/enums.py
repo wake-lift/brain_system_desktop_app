@@ -1,12 +1,12 @@
 from core.enums import StrLabelEnum
 
 
-class PressedKeyEnum(StrLabelEnum):
-    """All available pressed keyboard keys."""
+class PlayerPressedKeyEnum(StrLabelEnum):
+    """All available keyboard keys, which can be pressed by players."""
 
-    RED = '1', 'Нажата красная кнопка игрока'
-    GREEN = '2', 'Нажата зеленая кнопка игрока'
-    YELLOW = '3', 'Нажата желтая кнопка игрока'
-    BLUE = '4', 'Нажата синяя кнопка игрока'
-    WHITE = '5', 'Нажата белая кнопка игрока'
-    BLACK = '6', 'Нажата черная кнопка игрока'
+    RED = '1', 'red'
+    GREEN = '2', 'green'
+    YELLOW = '3', 'yellow'
+    BLUE = '4', 'blue'
+    WHITE = '5', 'white'
+    BLACK = '6', 'black'

@@ -8,7 +8,7 @@ class CustomTimer(QObject):
     timer_run_out = pyqtSignal()
     timer_reset = pyqtSignal()
 
-    def __init__(self, initial_time: int, precision: int = 100):
+    def __init__(self, initial_time: int, precision: int = 1):
         super().__init__()
         self.timer: QTimer = QTimer()
         self.timer.setInterval(precision)
