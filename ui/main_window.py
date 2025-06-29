@@ -80,6 +80,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self._setup_audio_player()
         self._populate_settings_widgets()
+        self._setup_tab_widgets()
         self._setup_game()
         self._setup_game_widgets()
         self._setup_settings_handlers()
@@ -226,6 +227,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.white_player_set_team_name_line_edit.setText(self.app_config.white_button_player_name)
         self.black_player_check_box.setChecked(self.app_config.black_button_enabled)
         self.black_player_set_team_name_line_edit.setText(self.app_config.black_button_player_name)
+
+    def _setup_tab_widgets(self):
+        self.settings_game_screen_tab_widget.currentChanged.connect(self._sync_game_and_moderator_control_tabs)
+        self.moderator_control_panel_tab_widget.currentChanged.connect(self._sync_game_and_moderator_control_tabs)
 
     def _setup_settings_handlers(self):
         self.choose_brain_ring_radio_button.clicked.connect(
@@ -387,3 +392,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.main_window_brain_color_box_05: self.main_window_brain_info_label_05,
             self.main_window_brain_color_box_06: self.main_window_brain_info_label_06,
         }
+
+    def _sync_game_and_moderator_control_tabs(self, index):
+        sender_widget = self.sender()
+        self.settings_game_screen_tab_widget.blockSignals(True)
+        self.moderator_control_panel_tab_widget.blockSignals(True)
+        if sender_widget == self.settings_game_screen_tab_widget and index in [1, 2, 3]:
+            self.moderator_control_panel_tab_widget.setCurrentIndex(index - 1)
+        elif sender_widget == self.settings_game_screen_tab_widget and index == 0:
+            self.settings_game_screen_tab_widget.setCurrentIndex(index)
+        else:
+            self.settings_game_screen_tab_widget.setCurrentIndex(index + 1)
+        self.settings_game_screen_tab_widget.blockSignals(False)
+        self.moderator_control_panel_tab_widget.blockSignals(False)
