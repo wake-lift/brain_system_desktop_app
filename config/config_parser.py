@@ -9,7 +9,7 @@ config.read(CONFIG_FILE_PATH)
 
 general_config: SectionProxy = config['GENERAL']
 brain_ring_config: SectionProxy = config['BRAIN_RING']
-what_where_when_config: SectionProxy = config['WHAT_WHERE_WHEN']
+www_config: SectionProxy = config['WHAT_WHERE_WHEN']
 erudite_config: SectionProxy = config['ERUDITE']
-buttons_config: SectionProxy = config['BUTTONS']
+player_buttons_config: SectionProxy = config['PLAYER_BUTTONS']
 moderator_buttons_config: SectionProxy = config['MODERATOR_BUTTONS']

@@ -16,7 +16,6 @@ class SoundFilesEnum(StrLabelEnum):
     TIMER_START_STOP = 'chgk_timer_start_stop.mp3', 'Таймер: старт/стоп'
     TIMER_10_SEC_LEFT = 'chgk_timer_10_sec_left.mp3', 'Таймер: осталось 10 секунд'
     BRAIN_TIMER_START_END = 'brain_ring_timer_start_stop_1174.66_hz.mp3', 'Брейн-ринг: старт / время вышло'
-    # BRAIN_TIMER_END = 'brain_ring_timer_end_1108.73_hz.mp3', 'Брейн-ринг: время вышло'
     BRAIN_TIMER_CLOSE_TO_END = 'brain_ring_timer_close_to_end_1174.66_hz.mp3', 'Брейн-ринг: время на исходе'
     BRAIN_PLAYER_BUTTON_PRESSED = 'brain_ring_player_button_pressed_830.61_hz.mp3', 'Брейн-ринг: кнопка игрока нажата'
     BRAIN_PLAYER_FALSE_START = 'brain_ring_false_start_523.25_hz.mp3', 'Брейн-ринг: фальстарт'

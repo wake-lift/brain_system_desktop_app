@@ -8,5 +8,5 @@ if TYPE_CHECKING:
     from ui.main_window import MainWindow
 
 
-def erudite_key_press_handler(obj: MainWindow, player: Player):
+def erudite_player_key_press_handler(obj: MainWindow, player: Player):
     pass

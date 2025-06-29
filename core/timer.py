@@ -7,6 +7,8 @@ class CustomTimer(QObject):
     timer_start = pyqtSignal()
     timer_run_out = pyqtSignal()
     timer_reset = pyqtSignal()
+    timer_ten_seconds_left = pyqtSignal()
+    timer_to_provide_answers_run_out = pyqtSignal()
 
     def __init__(self, initial_time: int, precision: int = 1):
         super().__init__()
@@ -66,3 +68,4 @@ class CustomTimer(QObject):
             self.stop()
             self.is_run_out = True
             self.timer_run_out.emit()
+            self.timer_to_provide_answers_run_out.emit()

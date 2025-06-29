@@ -4,10 +4,11 @@ from typing import List
 from config.config_parser import (
     CONFIG_FILE_PATH,
     brain_ring_config,
-    buttons_config,
+    player_buttons_config,
     config,
     general_config,
     moderator_buttons_config,
+    www_config,
 )
 from config.default_config import DEFAULT_CONFIG
 
@@ -20,41 +21,54 @@ class AppConfig:
         self.brain_ring_round_time: int = brain_ring_config.getint(
             option='brain_ring_round_time', fallback=DEFAULT_CONFIG['BRAIN_RING']['brain_ring_round_time'],
         )
-        self.red_button_enabled: bool = buttons_config.getboolean(
-            option='red_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['red_button_enabled'],
+        self.www_regular_time: int = www_config.getint(
+            option='www_regular_time', fallback=DEFAULT_CONFIG['WHAT_WHERE_WHEN']['www_regular_time'],
         )
-        self.red_button_player_name: str = buttons_config.get(
-            option='red_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['red_button_player_name'],
+        self.www_blitz_time: int = www_config.getint(
+            option='www_blitz_time', fallback=DEFAULT_CONFIG['WHAT_WHERE_WHEN']['www_blitz_time'],
         )
-        self.green_button_enabled: bool = buttons_config.getboolean(
-            option='green_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['green_button_enabled'],
+        self.www_super_blitz_time: int = www_config.getint(
+            option='www_super_blitz_time', fallback=DEFAULT_CONFIG['WHAT_WHERE_WHEN']['www_super_blitz_time'],
         )
-        self.green_button_player_name: str = buttons_config.get(
-            option='green_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['green_button_player_name'],
+        self.www_time_to_provide_answers: int = www_config.getint(
+            option='www_time_to_provide_answers',
+            fallback=DEFAULT_CONFIG['WHAT_WHERE_WHEN']['www_time_to_provide_answers'],
         )
-        self.blue_button_enabled: bool = buttons_config.getboolean(
-            option='blue_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['blue_button_enabled'],
+        self.red_button_enabled: bool = player_buttons_config.getboolean(
+            option='red_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['red_button_enabled'],
         )
-        self.blue_button_player_name: str = buttons_config.get(
-            option='blue_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['blue_button_player_name'],
+        self.red_button_player_name: str = player_buttons_config.get(
+            option='red_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['red_button_player_name'],
         )
-        self.yellow_button_enabled: bool = buttons_config.getboolean(
-            option='yellow_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['yellow_button_enabled'],
+        self.green_button_enabled: bool = player_buttons_config.getboolean(
+            option='green_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['green_button_enabled'],
         )
-        self.yellow_button_player_name: str = buttons_config.get(
-            option='yellow_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['yellow_button_player_name'],
+        self.green_button_player_name: str = player_buttons_config.get(
+            option='green_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['green_button_player_name'],
         )
-        self.white_button_enabled: bool = buttons_config.getboolean(
-            option='white_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['white_button_enabled'],
+        self.blue_button_enabled: bool = player_buttons_config.getboolean(
+            option='blue_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['blue_button_enabled'],
         )
-        self.white_button_player_name: str = buttons_config.get(
-            option='white_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['white_button_player_name'],
+        self.blue_button_player_name: str = player_buttons_config.get(
+            option='blue_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['blue_button_player_name'],
         )
-        self.black_button_enabled: bool = buttons_config.getboolean(
-            option='black_button_enabled', fallback=DEFAULT_CONFIG['BUTTONS']['black_button_enabled'],
+        self.yellow_button_enabled: bool = player_buttons_config.getboolean(
+            option='yellow_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['yellow_button_enabled'],
         )
-        self.black_button_player_name: str = buttons_config.get(
-            option='black_button_player_name', fallback=DEFAULT_CONFIG['BUTTONS']['black_button_player_name'],
+        self.yellow_button_player_name: str = player_buttons_config.get(
+            option='yellow_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['yellow_button_player_name'],
+        )
+        self.white_button_enabled: bool = player_buttons_config.getboolean(
+            option='white_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['white_button_enabled'],
+        )
+        self.white_button_player_name: str = player_buttons_config.get(
+            option='white_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['white_button_player_name'],
+        )
+        self.black_button_enabled: bool = player_buttons_config.getboolean(
+            option='black_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['black_button_enabled'],
+        )
+        self.black_button_player_name: str = player_buttons_config.get(
+            option='black_button_player_name', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['black_button_player_name'],
         )
         self.brain_ring_start_resume_key: str = moderator_buttons_config.get(
             option='brain_ring_start_resume_key',

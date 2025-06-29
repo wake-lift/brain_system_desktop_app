@@ -1,11 +1,11 @@
 #include <Keyboard.h>
 
 const int buttonPinRed = 8;
-const int buttonPinGreen = 20;
+const int buttonPinGreen = 10;
+const int buttonPinBlue = 20;
 const int buttonPinYellow = 15;
-const int buttonPinBlue = 6;
-const int buttonPinWhite = 10;
-const int buttonPinBlack = 2;
+const int buttonPinWhite = 2;
+const int buttonPinBlack = 6;
 
 
 bool lastStateWhite = LOW;

@@ -7,7 +7,10 @@ from PyQt6.QtWidgets import QMessageBox
 from config.config import AppConfig
 from config.enums import GameTypeEnum
 from core.timer import CustomTimer
+from game_modes.what_where_when.game import WWWGame
+from game_modes.what_where_when.handlers import set_www_game_info_label_text
 from ui.widgets.brain_ring_moderator_game_widget import BrainRingModeratorGameWidget
+from ui.widgets.www_moderator_game_widget import WWWModeratorGameWidget
 
 
 if TYPE_CHECKING:
@@ -114,19 +117,7 @@ def save_settings_button_handler(obj: MainWindow):
         acknowledge_box.setIcon(QMessageBox.Icon.Information)
         acknowledge_box.setStandardButtons(QMessageBox.StandardButton.Ok)
         acknowledge_box.exec()
-        obj.app_config = AppConfig()
-        obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
-        obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
-        obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
-            parent=obj.brain_ring_game_display_tab,
-            timer=obj.brain_ring_timer,
-            audio_player=obj.audio_player,
-            audio_output=obj.audio_output,
-        )
-        obj.main_window_brain_info_timer_widget_vertical_layout.addWidget(obj.main_window_brain_info_timer_label)
-        obj._setup_game()
-        obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
-        obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())
+        _reinitialize_app_data(obj)
 
 
 def reset_settings_button_handler(obj: MainWindow):
@@ -155,17 +146,35 @@ def reset_settings_button_handler(obj: MainWindow):
         acknowledge_box.setIcon(QMessageBox.Icon.Information)
         acknowledge_box.setStandardButtons(QMessageBox.StandardButton.Ok)
         acknowledge_box.exec()
-        obj.app_config = AppConfig()
-        obj._populate_settings_widgets()
-        obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
-        obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
-        obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
-            parent=obj.brain_ring_game_display_tab,
-            timer=obj.brain_ring_timer,
-            audio_player=obj.audio_player,
-            audio_output=obj.audio_output,
-        )
-        obj.main_window_brain_info_timer_widget_vertical_layout.addWidget(obj.main_window_brain_info_timer_label)
-        obj._setup_game()
-        obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
-        obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())
+        _reinitialize_app_data(obj)
+
+
+def _reinitialize_app_data(obj: MainWindow):
+    obj.app_config = AppConfig()
+    obj._populate_settings_widgets()
+    obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
+    obj.www_timer = CustomTimer(initial_time=obj.app_config.www_regular_time)
+    obj._setup_game()
+    obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
+    obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
+        parent=obj.brain_ring_game_display_tab,
+        timer=obj.brain_ring_timer,
+        audio_player=obj.audio_player,
+        audio_output=obj.audio_output,
+    )
+    obj.main_window_brain_info_timer_widget_vertical_layout.addWidget(obj.main_window_brain_info_timer_label)
+    obj.main_window_www_timer_widget_vertical_layout.removeWidget(obj.main_window_www_timer_label)
+    obj.main_window_www_timer_label = WWWModeratorGameWidget(
+        parent=obj.brain_ring_game_display_tab,
+        timer=obj.www_timer,
+        audio_player=obj.audio_player,
+        audio_output=obj.audio_output,
+    )
+    obj.main_window_www_timer_widget_vertical_layout.addWidget(obj.main_window_www_timer_label)
+    if isinstance(obj.current_game, WWWGame):
+        set_www_game_info_label_text(obj)
+    else:
+        obj.main_window_www_game_info_label.setText('')
+    obj._setup_game()
+    obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
+    obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())

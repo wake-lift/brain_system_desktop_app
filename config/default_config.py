@@ -10,9 +10,14 @@ DEFAULT_CONFIG: Dict[str, Dict[str, str | int | bool]] = {
     'BRAIN_RING': {
         'brain_ring_round_time': 30,
     },
-    'WHAT_WHERE_WHEN': {},
+    'WHAT_WHERE_WHEN': {
+        'www_regular_time': 21,
+        'www_blitz_time': 15,
+        'www_super_blitz_time': 12,
+        'www_time_to_provide_answers': 10,
+    },
     'ERUDITE': {},
-    'BUTTONS': {
+    'PLAYER_BUTTONS': {
         'red_button_enabled': True,
         'red_button_player_name': 'Red Team',
         'green_button_enabled': True,

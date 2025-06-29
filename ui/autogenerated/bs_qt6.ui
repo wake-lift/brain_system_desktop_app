@@ -63,7 +63,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="settings_tab">
            <property name="styleSheet">
@@ -361,19 +361,19 @@
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
+                <verstretch>10</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>30</height>
+                <height>15</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>70</height>
+                <height>16777215</height>
                </size>
               </property>
               <layout class="QHBoxLayout" name="main_window_brain_blocked_players_indicator_widget_horizontal_layout"/>
@@ -382,9 +382,9 @@
             <item>
              <widget class="QWidget" name="main_window_brain_info_timer_widget" native="true">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
+                <verstretch>50</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
@@ -657,7 +657,58 @@
            <attribute name="title">
             <string>What-Where-When</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
+           <layout class="QVBoxLayout" name="www_game_display_tab_vertical_layout">
+            <item>
+             <widget class="QWidget" name="main_window_www_game_widget" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QVBoxLayout" name="main_window_www_game_info_widget_vertical_layout">
+               <item>
+                <widget class="QWidget" name="main_window_www_game_info_widget" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>20</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <item>
+                   <widget class="QLabel" name="main_window_www_game_info_label">
+                    <property name="font">
+                     <font>
+                      <pointsize>14</pointsize>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="main_window_www_timer_widget" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>80</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <layout class="QVBoxLayout" name="main_window_www_timer_widget_vertical_layout"/>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item>
              <spacer name="www_tab_horizontal_spacer">
               <property name="orientation">
@@ -673,6 +724,12 @@
             </item>
             <item>
              <widget class="QPushButton" name="open_www_window_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Open game window</string>
               </property>
@@ -903,7 +960,7 @@
                <string notr="true">background: #EFF0F1;</string>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="brain_ring_game_control_tab">
                <attribute name="title">
@@ -1006,7 +1063,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>150</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="font">
@@ -1024,9 +1081,9 @@
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_11">
                    <item>
-                    <widget class="QRadioButton" name="regular_question_radio_button">
+                    <widget class="QRadioButton" name="www_choose_regular_question_radio_button">
                      <property name="text">
-                      <string>Regular (60 s)</string>
+                      <string>Regular</string>
                      </property>
                      <property name="checked">
                       <bool>true</bool>
@@ -1034,20 +1091,49 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="blitz_radio_button">
+                    <widget class="QRadioButton" name="www_choose_blitz_radio_button">
                      <property name="text">
-                      <string>Blitz (30 s)</string>
+                      <string>Blitz</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="super_blitz_radio_button">
+                    <widget class="QRadioButton" name="www_choose_super_blitz_radio_button">
                      <property name="text">
-                      <string>Super Blitz (20 s)</string>
+                      <string>Super Blitz</string>
                      </property>
                     </widget>
                    </item>
                   </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_6">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="www_time_to_provide_answers_check_box">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Enable time to provide answers</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -1064,7 +1150,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="www_start_push_button">
+                 <widget class="QPushButton" name="www_moderator_start_resume_push_button">
                   <property name="minimumSize">
                    <size>
                     <width>200</width>
@@ -1072,7 +1158,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Start</string>
+                   <string>Start / Resume</string>
                   </property>
                  </widget>
                 </item>
@@ -1090,7 +1176,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="www_reset_push_button">
+                 <widget class="QPushButton" name="www_moderator_reset_push_button">
                   <property name="minimumSize">
                    <size>
                     <width>200</width>

@@ -24,8 +24,3 @@ class ModeratorPressedKeyEnum(StrEnum):
     START_RESUME = app_config.brain_ring_start_resume_key
     RESET_PAUSE = app_config.brain_ring_reset_pause_key
     RESET_ROUND = app_config.brain_ring_reset_round_key
-
-
-print(ModeratorPressedKeyEnum.START_RESUME.value)
-print(ModeratorPressedKeyEnum.RESET_PAUSE.value)
-print(ModeratorPressedKeyEnum.RESET_ROUND.value)
