@@ -154,7 +154,6 @@ def _reinitialize_app_data(obj: MainWindow):
     obj._populate_settings_widgets()
     obj.brain_ring_timer = CustomTimer(initial_time=obj.app_config.brain_ring_round_time)
     obj.www_timer = CustomTimer(initial_time=obj.app_config.www_regular_time)
-    obj._setup_game()
     obj.main_window_brain_info_timer_widget_vertical_layout.removeWidget(obj.main_window_brain_info_timer_label)
     obj.main_window_brain_info_timer_label = BrainRingModeratorGameWidget(
         parent=obj.brain_ring_game_display_tab,
@@ -171,6 +170,7 @@ def _reinitialize_app_data(obj: MainWindow):
         audio_output=obj.audio_output,
     )
     obj.main_window_www_timer_widget_vertical_layout.addWidget(obj.main_window_www_timer_label)
+    obj.www_time_to_provide_answers_check_box.setChecked(True)
     if isinstance(obj.current_game, WWWGame):
         set_www_game_info_label_text(obj)
     else:
