@@ -320,7 +320,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 status=BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN,
                 is_false_start_active=False
             )
-            self.moderator_game_status_label.setText(f'{BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
+            self.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
         elif self.game_type == GameTypeEnum.WWW:
             self.current_game = WWWGame()
             self.www_timer.timer_start.connect(slot=lambda: www_timer_start_event_handler(self))
