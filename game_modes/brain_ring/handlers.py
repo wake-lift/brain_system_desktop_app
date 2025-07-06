@@ -7,6 +7,7 @@ from PyQt6.QtGui import QColor
 
 from config.enums import GameTypeEnum, SoundFilesEnum
 from core.blocked_player_indicator import BlockedPlayerIndicatorWidget
+from game_modes.brain_ring.game import BrainRingGame
 from game_modes.player import Player
 from game_modes.brain_ring.enums import BrainRingGameStatusEnum
 
@@ -15,8 +16,8 @@ if TYPE_CHECKING:
     from ui.main_window import MainWindow
 
 
-def brain_ring_moderator_start_resume_push_button_handler(obj: MainWindow):
-    if obj.game_type != GameTypeEnum.BRAIN_RING:
+def brain_ring_moderator_start_resume_push_button_handler(obj: MainWindow) -> None:
+    if obj.game_type != GameTypeEnum.BRAIN_RING or not isinstance(obj.current_game, BrainRingGame):
         return
     if obj.current_game.status == BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN:
         if obj.brain_ring_timer.is_paused:
@@ -27,8 +28,8 @@ def brain_ring_moderator_start_resume_push_button_handler(obj: MainWindow):
         obj.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.COUNTDOWN_STARTED.value}')
 
 
-def brain_ring_moderator_reset_pause_push_button_handler(obj: MainWindow):
-    if obj.game_type != GameTypeEnum.BRAIN_RING:
+def brain_ring_moderator_reset_pause_push_button_handler(obj: MainWindow) -> None:
+    if obj.game_type != GameTypeEnum.BRAIN_RING or not isinstance(obj.current_game, BrainRingGame):
         return
     if obj.current_game.status in [BrainRingGameStatusEnum.FALSE_START, BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED]:
         obj.current_game.status = BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN
@@ -40,8 +41,8 @@ def brain_ring_moderator_reset_pause_push_button_handler(obj: MainWindow):
         obj.reset_all_enabled_players_widget_display()
 
 
-def brain_ring_moderator_reset_round_push_button_handler(obj: MainWindow):
-    if obj.game_type != GameTypeEnum.BRAIN_RING:
+def brain_ring_moderator_reset_round_push_button_handler(obj: MainWindow) -> None:
+    if obj.game_type != GameTypeEnum.BRAIN_RING or not isinstance(obj.current_game, BrainRingGame):
         return
     obj.brain_ring_timer.reset()
     obj.reset_all_enabled_players()
@@ -53,7 +54,7 @@ def brain_ring_moderator_reset_round_push_button_handler(obj: MainWindow):
 
 
 def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
-    if any([player.is_blocked, not player.is_enbled]):
+    if any([player.is_blocked, not player.is_enbled, not isinstance(obj.current_game, BrainRingGame)]):
         return
     if obj.current_game.status == BrainRingGameStatusEnum.COUNTDOWN_STARTED:
         # player was first who pushed the button to give an answer
@@ -93,3 +94,12 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         obj.main_window_brain_blocked_players_indicator_widget_horizontal_layout.addWidget(
             BlockedPlayerIndicatorWidget(background_color=QColor(player.MAP_PLAYER_COLOR_QCOLOR[player.color])),
         )
+
+
+def brain_timer_run_out_event_handler(obj: MainWindow) -> None:
+    if obj.game_type != GameTypeEnum.BRAIN_RING or not isinstance(obj.current_game, BrainRingGame):
+        return
+    obj.current_game.status = BrainRingGameStatusEnum.TIME_IS_UP
+    obj.block_all_enabled_players()
+    obj.reset_all_enabled_players_widget_display()
+    obj.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.TIME_IS_UP.value}')

@@ -63,7 +63,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="settings_tab">
            <property name="styleSheet">
@@ -137,138 +137,242 @@
              </widget>
             </item>
             <item>
-             <layout class="QFormLayout" name="formLayout">
-              <item row="0" column="0">
-               <widget class="QSpinBox" name="brain_ring_round_duration_spin_box">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-                <property name="maximum">
-                 <number>999</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="brain_ring_round_time_setting_label">
-                <property name="text">
-                 <string>Brain Ring round duration, s</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="red_player_check_box">
-                <property name="styleSheet">
-                 <string notr="true">QCheckBox {
+             <widget class="QScrollArea" name="scrollArea">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>344</width>
+                 <height>386</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_15">
+                <item>
+                 <layout class="QFormLayout" name="formLayout">
+                  <item row="0" column="0">
+                   <widget class="QCheckBox" name="red_player_check_box">
+                    <property name="styleSheet">
+                     <string notr="true">QCheckBox {
     color: red;
 }</string>
-                </property>
-                <property name="text">
-                 <string>Red button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="red_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="green_player_check_box">
-                <property name="styleSheet">
-                 <string notr="true">QCheckBox {
+                    </property>
+                    <property name="text">
+                     <string>Red button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="red_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="inputMask">
+                     <string/>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QCheckBox" name="green_player_check_box">
+                    <property name="styleSheet">
+                     <string notr="true">QCheckBox {
     color: green;
 }</string>
-                </property>
-                <property name="text">
-                 <string>Green button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="green_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QCheckBox" name="blue_player_check_box">
-                <property name="styleSheet">
-                 <string notr="true">QCheckBox {
+                    </property>
+                    <property name="text">
+                     <string>Green button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="green_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QCheckBox" name="blue_player_check_box">
+                    <property name="styleSheet">
+                     <string notr="true">QCheckBox {
     color: blue;
 }</string>
-                </property>
-                <property name="text">
-                 <string>Blue button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLineEdit" name="blue_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QCheckBox" name="yellow_player_check_box">
-                <property name="styleSheet">
-                 <string notr="true">QCheckBox {
+                    </property>
+                    <property name="text">
+                     <string>Blue button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLineEdit" name="blue_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QCheckBox" name="yellow_player_check_box">
+                    <property name="styleSheet">
+                     <string notr="true">QCheckBox {
     color:  #ffcc00;
 }</string>
-                </property>
-                <property name="text">
-                 <string>Yellow button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLineEdit" name="yellow_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QCheckBox" name="white_player_check_box">
-                <property name="styleSheet">
-                 <string notr="true"> color:  #696969;</string>
-                </property>
-                <property name="text">
-                 <string>White button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QLineEdit" name="white_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="QCheckBox" name="black_player_check_box">
-                <property name="text">
-                 <string>Black button:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="1">
-               <widget class="QLineEdit" name="black_player_set_team_name_line_edit">
-                <property name="styleSheet">
-                 <string notr="true">background: white;</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+                    </property>
+                    <property name="text">
+                     <string>Yellow button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLineEdit" name="yellow_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QCheckBox" name="white_player_check_box">
+                    <property name="styleSheet">
+                     <string notr="true"> color:  #696969;</string>
+                    </property>
+                    <property name="text">
+                     <string>White button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QLineEdit" name="white_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="0">
+                   <widget class="QCheckBox" name="black_player_check_box">
+                    <property name="text">
+                     <string>Black button:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="1">
+                   <widget class="QLineEdit" name="black_player_set_team_name_line_edit">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="0">
+                   <widget class="QSpinBox" name="brain_ring_round_duration_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="1">
+                   <widget class="QLabel" name="brain_ring_round_time_setting_label">
+                    <property name="text">
+                     <string>Brain Ring round duration, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="0">
+                   <widget class="QSpinBox" name="erudite_round_duration_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="1">
+                   <widget class="QLabel" name="erudite_round_time_setting_label">
+                    <property name="text">
+                     <string>Erudite round duration, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="1">
+                   <widget class="QLabel" name="www_regular_time_setting_label">
+                    <property name="text">
+                     <string>WWW regular time, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="0">
+                   <widget class="QSpinBox" name="www_regular_time_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="9" column="1">
+                   <widget class="QLabel" name="www_blitz_time_setting_label">
+                    <property name="text">
+                     <string>WWW blitz time, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="9" column="0">
+                   <widget class="QSpinBox" name="www_blitz_time_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="10" column="1">
+                   <widget class="QLabel" name="www_super_blitz_time_setting_label">
+                    <property name="text">
+                     <string>WWW super blitz time, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="10" column="0">
+                   <widget class="QSpinBox" name="www_super_blitz_time_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="11" column="1">
+                   <widget class="QLabel" name="www_time_to_provide_answers_setting_label">
+                    <property name="text">
+                     <string>WWW time to provide answers, s</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="11" column="0">
+                   <widget class="QSpinBox" name="www_time_to_provide_answers_spin_box">
+                    <property name="styleSheet">
+                     <string notr="true">background: white;</string>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </widget>
             </item>
             <item>
              <spacer name="settings_tab_horizontal_spacer">
@@ -750,6 +854,7 @@
                 <verstretch>10</verstretch>
                </sizepolicy>
               </property>
+              <layout class="QHBoxLayout" name="main_window_erudite_blocked_players_indicator_widget_horizontal_layout"/>
              </widget>
             </item>
             <item>
@@ -760,6 +865,7 @@
                 <verstretch>50</verstretch>
                </sizepolicy>
               </property>
+              <layout class="QVBoxLayout" name="main_window_erudite_info_timer_widget_vertical_layout"/>
              </widget>
             </item>
             <item>
@@ -1207,7 +1313,7 @@
                <string notr="true">background: #EFF0F1;</string>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="brain_ring_game_control_tab">
                <attribute name="title">
@@ -1310,7 +1416,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>0</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="font">

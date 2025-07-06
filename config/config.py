@@ -4,6 +4,7 @@ from typing import List
 from config.config_parser import (
     CONFIG_FILE_PATH,
     brain_ring_config,
+    erudite_config,
     player_buttons_config,
     config,
     general_config,
@@ -33,6 +34,9 @@ class AppConfig:
         self.www_time_to_provide_answers: int = www_config.getint(
             option='www_time_to_provide_answers',
             fallback=DEFAULT_CONFIG['WHAT_WHERE_WHEN']['www_time_to_provide_answers'],
+        )
+        self.erudite_round_time: int = erudite_config.getint(
+            option='erudite_round_time', fallback=DEFAULT_CONFIG['ERUDITE']['erudite_round_time'],
         )
         self.red_button_enabled: bool = player_buttons_config.getboolean(
             option='red_button_enabled', fallback=DEFAULT_CONFIG['PLAYER_BUTTONS']['red_button_enabled'],
