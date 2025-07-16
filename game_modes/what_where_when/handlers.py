@@ -15,7 +15,7 @@ from game_modes.what_where_when.enums import (
     WWWSuperBlitzQuestionCounter,
 )
 from game_modes.what_where_when.game import WWWGame
-from ui.widgets.www_moderator_game_widget import WWWModeratorGameWidget
+from ui.widgets.www_moderator_timer_widget import WwwModeratorTimerWidget
 
 
 if TYPE_CHECKING:
@@ -24,6 +24,7 @@ if TYPE_CHECKING:
 
 
 def www_choose_regular_question_radio_button_handler(obj: MainWindow) -> None:
+    """Обработчик выбора чекбокса обычного раунда на панели управления (ЧГК)."""
     initialize_www_timer(obj, initial_time=obj.app_config.www_regular_time)
 
     initialize_main_window_www_timer_widget(obj)
@@ -36,6 +37,7 @@ def www_choose_regular_question_radio_button_handler(obj: MainWindow) -> None:
 
 
 def www_choose_blitz_radio_button_handler(obj: MainWindow) -> None:
+    """Обработчик выбора чекбокса блиц-раунда на панели управления (ЧГК)."""
     initialize_www_timer(obj, initial_time=obj.app_config.www_blitz_time)
     initialize_main_window_www_timer_widget(obj)
     if isinstance(obj.current_game, WWWGame):
@@ -47,6 +49,7 @@ def www_choose_blitz_radio_button_handler(obj: MainWindow) -> None:
 
 
 def www_choose_super_blitz_radio_button_handler(obj: MainWindow) -> None:
+    """Обработчик выбора чекбокса суперблиц-раунда на панели управления (ЧГК)."""
     initialize_www_timer(obj, initial_time=obj.app_config.www_super_blitz_time)
     initialize_main_window_www_timer_widget(obj)
     if isinstance(obj.current_game, WWWGame):
@@ -58,6 +61,7 @@ def www_choose_super_blitz_radio_button_handler(obj: MainWindow) -> None:
 
 
 def www_time_to_provide_answers_check_box_handler(obj: MainWindow, checkbox_state: int) -> None:
+    """Обработчик выбора чекбокса включения/отключения доп. времени на сдачу ответов на панели управления (ЧГК)."""
     if not isinstance(obj.current_game, WWWGame):
         return
     if checkbox_state == 0:
@@ -67,6 +71,7 @@ def www_time_to_provide_answers_check_box_handler(obj: MainWindow, checkbox_stat
 
 
 def www_moderator_start_resume_push_button_handler(obj: MainWindow) -> None:
+    """Обработчик нажатия кнопки ведущего "СТАРТ/ПРОДОЛЖИТЬ" на панели управления (ЧГК)."""
     if obj.game_type != GameTypeEnum.WWW or not isinstance(obj.current_game, WWWGame):
         return
     if obj.current_game.status == WWWGameStatusEnum.READY:
@@ -75,6 +80,7 @@ def www_moderator_start_resume_push_button_handler(obj: MainWindow) -> None:
 
 
 def www_moderator_reset_push_button_handler(obj: MainWindow) -> None:
+    """Обработчик нажатия кнопки ведущего "СБРОС" на панели управления (ЧГК)."""
     if obj.game_type != GameTypeEnum.WWW or not isinstance(obj.current_game, WWWGame):
         return
     obj.www_timer.reset()
@@ -105,10 +111,12 @@ def www_moderator_reset_push_button_handler(obj: MainWindow) -> None:
 
 
 def www_player_key_press_handler(obj: MainWindow, player: Player) -> None:
+    """TODO: Обработчик нажатия кнопки игрока (ЧГК)."""
     pass
 
 
 def set_www_game_info_label_text(obj: MainWindow) -> None:
+    """Установка текста на информационной панели модератора (ЧГК)."""
     if not isinstance(obj.current_game, WWWGame):
         return
     if obj.current_game.round_mode == WWWRoundModeEnum.REGULAR:
@@ -124,10 +132,12 @@ def set_www_game_info_label_text(obj: MainWindow) -> None:
 
 
 def www_timer_start_event_handler(obj: MainWindow):
+    """Обработчик события старта таймера (ЧГК). В настоящее время нет необходимости в этой логике."""
     pass
 
 
 def www_timer_run_out_event_handler(obj: MainWindow) -> None:
+    """Обработчик события окончания таймера (ЧГК)."""
     if all([
         obj.current_game.enable_time_to_provide_answers,
         obj.current_game.status != WWWGameStatusEnum.PROVIDE_ANSWERS_COUNTDOWN_STARTED and
@@ -177,16 +187,19 @@ def www_timer_run_out_event_handler(obj: MainWindow) -> None:
 
 
 def www_timer_timer_reset_event_handler(obj: MainWindow):
+    """Обработчик события сброса таймера (ЧГК). В настоящее время нет необходимости в этой логике."""
     pass
 
 
 def www_timer_timer_ten_seconds_left_handler(obj: MainWindow) -> None:
+    """Обработчик события: на таймере осталось 10 секунд (ЧГК)."""
     if obj.current_game.round_mode == WWWRoundModeEnum.REGULAR:
         play_sound_in_www_handlers(obj, sound=SoundFilesEnum.TIMER_10_SEC_LEFT)
         obj.main_window_www_timer_label.set_font_color(QColor(210, 126, 0))
 
 
 def run_timer_to_provide_answers(obj: MainWindow) -> None:
+    """Запускает доп. таймер для сбора ответов игроков."""
     obj.www_timer = CustomTimer(obj.app_config.www_time_to_provide_answers, precision=100)
     obj.www_timer.timer_to_provide_answers_run_out.connect(slot=lambda: www_timer_run_out_event_handler(obj))
     obj.www_timer.timer_reset.connect(slot=lambda: www_timer_timer_reset_event_handler(obj))
@@ -198,6 +211,7 @@ def run_timer_to_provide_answers(obj: MainWindow) -> None:
 
 
 def initialize_www_timer(obj: MainWindow, initial_time: int, precision: int = 100) -> None:
+    """Инициализирует ЧГК-таймер."""
     obj.www_timer = CustomTimer(initial_time=initial_time, precision=precision)
     obj.www_timer.timer_start.connect(slot=lambda: www_timer_start_event_handler(obj))
     obj.www_timer.timer_run_out.connect(slot=lambda: www_timer_run_out_event_handler(obj))
@@ -206,8 +220,9 @@ def initialize_www_timer(obj: MainWindow, initial_time: int, precision: int = 10
 
 
 def initialize_main_window_www_timer_widget(obj: MainWindow) -> None:
+    """Инициализирует виджет таймера на панели модератора."""
     obj.main_window_www_timer_widget_vertical_layout.removeWidget(obj.main_window_www_timer_label)
-    obj.main_window_www_timer_label = WWWModeratorGameWidget(
+    obj.main_window_www_timer_label = WwwModeratorTimerWidget(
         parent=obj.brain_ring_game_display_tab,
         timer=obj.www_timer,
         audio_player=obj.audio_player,
@@ -217,6 +232,7 @@ def initialize_main_window_www_timer_widget(obj: MainWindow) -> None:
 
 
 def play_sound_in_www_handlers(obj: MainWindow, sound: SoundFilesEnum) -> None:
+    """Воспроизводит звук в обработчиках событий (ЧГК)."""
     path_to_file = Path(__file__).absolute().parent.parent.parent / 'assets' / 'sounds' / sound.value
     obj.current_audio_file = QUrl.fromLocalFile(str(path_to_file))
     obj.audio_player.setSource(obj.current_audio_file)

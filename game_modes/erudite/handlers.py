@@ -6,10 +6,10 @@ from PyQt6.QtCore import QTime
 from PyQt6.QtGui import QColor
 
 from config.enums import GameTypeEnum, SoundFilesEnum
-from core.blocked_player_indicator import BlockedPlayerIndicatorWidget
 from game_modes.erudite.enums import EruditeGameStatusEnum
 from game_modes.erudite.game import EruditeGame
 from game_modes.player import Player
+from ui.widgets.icon_widgets import CrossSvgWidget
 
 
 if TYPE_CHECKING:
@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 
 def erudite_moderator_start_resume_push_button_handler(obj: MainWindow) -> None:
+    """Обработчик нажатия кнопки ведущего "СТАРТ/ПРОДОЛЖИТЬ" на панели управления (эрудитка)."""
     if obj.game_type != GameTypeEnum.ERUDITE or not isinstance(obj.current_game, EruditeGame):
         return
     if obj.current_game.status == EruditeGameStatusEnum.READY_TO_START_COUNTDOWN:
@@ -29,6 +30,7 @@ def erudite_moderator_start_resume_push_button_handler(obj: MainWindow) -> None:
 
 
 def erudite_moderator_reset_pause_push_button_handler(obj: MainWindow) -> None:
+    """Обработчик нажатия кнопки ведущего "СБРОС ПАУЗЫ" на панели управления (эрудитка)."""
     if obj.game_type != GameTypeEnum.ERUDITE or not isinstance(obj.current_game, EruditeGame):
         return
     if obj.current_game.status == EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED:
@@ -39,6 +41,7 @@ def erudite_moderator_reset_pause_push_button_handler(obj: MainWindow) -> None:
 
 
 def erudite_moderator_reset_round_push_button_handler(obj: MainWindow):
+    """Обработчик нажатия кнопки ведущего СБРОС РАУНДА" на панели управления (эрудитка)."""
     if obj.game_type != GameTypeEnum.ERUDITE or not isinstance(obj.current_game, EruditeGame):
         return
     obj.erudite_timer.reset()
@@ -50,10 +53,11 @@ def erudite_moderator_reset_round_push_button_handler(obj: MainWindow):
 
 
 def erudite_player_key_press_handler(obj: MainWindow, player: Player):
+    """Обработчик нажатия кнопки ведущего "СБРОС ПАУЗЫ" на панели управления (эрудитка)."""
     if any([player.is_blocked, not player.is_enbled, not isinstance(obj.current_game, EruditeGame)]):
         return
     if obj.current_game.status == EruditeGameStatusEnum.COUNTDOWN_STARTED:
-        # player was first who pushed the button to give an answer
+        # Обработка логики для игрока, который первым нажал кнопку и имеет право дать ответ
         player.is_blocked = True
         remaining_time = obj.erudite_timer.pause()
         obj.current_game.first_button_pressed_time = QTime.currentTime()
@@ -64,11 +68,13 @@ def erudite_player_key_press_handler(obj: MainWindow, player: Player):
         )
         obj.set_erudite_info_label(player=player, game_status=obj.current_game.status, remaining_time=remaining_time)
         obj.main_window_erudite_blocked_players_indicator_widget_horizontal_layout.addWidget(
-            BlockedPlayerIndicatorWidget(background_color=QColor(player.MAP_PLAYER_COLOR_QCOLOR[player.color])),
+            CrossSvgWidget(
+                background_color=QColor(player.icon_background_color), stroke_color=QColor(player.icon_stroke_color),
+            ),
         )
 
     elif obj.current_game.status == EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED:
-        # player was not first who pushed the button to give an answer
+        # Обработка логики для игроков, которые нажали кнопку, но не были первыми
         if obj.current_game.first_button_pressed_time is not None:
             if not player.is_already_displayed_on_widget:
                 current_time = QTime.currentTime()
@@ -78,6 +84,7 @@ def erudite_player_key_press_handler(obj: MainWindow, player: Player):
 
 
 def erudite_timer_run_out_event_handler(obj: MainWindow) -> None:
+    """Обработчик события истечения времени таймера (эрудитка)."""
     if obj.game_type != GameTypeEnum.ERUDITE or not isinstance(obj.current_game, EruditeGame):
         return
     obj.current_game.status = EruditeGameStatusEnum.TIME_IS_UP
