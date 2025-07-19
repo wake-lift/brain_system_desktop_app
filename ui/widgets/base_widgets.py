@@ -98,7 +98,7 @@ class ScalableLabel(QLabel):
     def __init__(
         self,
         bold: bool = False,
-        alignment: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignLeft,
+        alignment: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignCenter,
         *args, **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -124,16 +124,10 @@ class ScalableLabel(QLabel):
 
 
 class ScalableSvgWidget(QSvgWidget):
-    """
-    Базовый класс для автомасштабируемого виджета на основе svg-изображения с двумя параметрами цвета:
-    - BG_COLOR - цвет фона;
-    - STROKE_COLOR - цвет обводки и внутренних элементов.
-    """
+    """ Базовый класс для автомасштабируемого виджета на основе svg-изображения."""
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self._background_color: QColor = QColor(Qt.GlobalColor.transparent)
-        self._stroke_color = QColor(Qt.GlobalColor.black)
         self._aspect_ratio = None
         self.template_path: Path = Path('')
         self.svg_template: str = ''
@@ -146,8 +140,6 @@ class ScalableSvgWidget(QSvgWidget):
     def update_svg(self):
         """Обновляет цвет svg-изображения."""
         svg = self.svg_template
-        svg = svg.replace('%%BG_COLOR%%', self.background_color.name())
-        svg = svg.replace('%%STROKE_COLOR%%', self.stroke_color.name())
         self.load(QByteArray(svg.encode('utf-8')))
 
         if self.renderer().isValid():
@@ -181,3 +173,29 @@ class ScalableSvgWidget(QSvgWidget):
         x = (widget_size.width() - target_size.width()) // 2
         y = (widget_size.height() - target_size.height()) // 2
         self.renderer().render(painter, QRectF(x, y, target_size.width(), target_size.height()))
+
+
+class ScalableColoredSvgWidget(ScalableSvgWidget):
+    """
+    Базовый класс для автомасштабируемого виджета на основе svg-изображения с двумя параметрами цвета:
+    - BG_COLOR - цвет фона;
+    - STROKE_COLOR - цвет обводки и внутренних элементов.
+    """
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self._background_color: QColor = QColor(Qt.GlobalColor.transparent)
+        self._stroke_color = QColor(Qt.GlobalColor.black)
+
+    def update_svg(self):
+        """Обновляет цвет svg-изображения."""
+        svg = self.svg_template
+        svg = svg.replace('%%BG_COLOR%%', self.background_color.name())
+        svg = svg.replace('%%STROKE_COLOR%%', self.stroke_color.name())
+        self.load(QByteArray(svg.encode('utf-8')))
+
+        if self.renderer().isValid():
+            default_size = self.renderer().defaultSize()
+            if not default_size.isEmpty():
+                self._aspect_ratio = default_size.width() / default_size.height()
+                self.updateGeometry()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from PyQt6.QtCore import QTime
+from PyQt6.QtCore import QTime, Qt
 from PyQt6.QtGui import QColor
 
 from config.enums import GameTypeEnum, SoundFilesEnum
@@ -51,7 +51,7 @@ def brain_ring_moderator_reset_pause_push_button_handler(obj: MainWindow) -> Non
             item = layout.itemAt(i)
             if widget := item.widget():
                 if isinstance(widget, CheckCircleSvgWidget):
-                    blocked_info_icon_widget = obj.brain_ring_game_window.build_icon_widget(
+                    blocked_info_icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
                         widget_cls=CrossSvgWidget,
                         background_color=widget.background_color,
                         stroke_color=widget.stroke_color,
@@ -95,7 +95,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, remaining_time=remaining_time)
 
         # добавляет виджет на игровую панель с информацией об игроках
-        icon_widget = obj.brain_ring_game_window.build_icon_widget(
+        icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
             widget_cls=CheckCircleSvgWidget,
             background_color=player.icon_background_color,
             stroke_color=player.icon_stroke_color,
@@ -104,7 +104,11 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             text=f'{player.name}', color='#d6eaf8', bold=True,
         )
         player_time_label = obj.brain_ring_game_window.build_label_widget(
-            horizontal_stretch=30, text=f'{remaining_time} sec', color='#d6eaf8', bold=True,
+            horizontal_stretch=30,
+            text=f'{remaining_time} sec',
+            color='#d6eaf8',
+            alignment=Qt.AlignmentFlag.AlignLeft,
+            bold=True,
         )
         obj.brain_ring_game_window.populate_player_info_horizontal_layout(
             layout=obj.brain_ring_game_window.first_unpopulated_player_info_layout,
@@ -121,7 +125,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         )
 
         # добавляет виджет на игровую панель с информацией о заблокированных игроках
-        blocked_info_icon_widget = obj.brain_ring_game_window.build_icon_widget(
+        blocked_info_icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
             widget_cls=CheckCircleSvgWidget,
             background_color=player.icon_background_color,
             stroke_color=player.icon_stroke_color,
@@ -139,7 +143,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
                 obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, diff_time=diff_time)
 
                 # добавляет виджет на игровую панель с информацией об игроках
-                icon_widget = obj.brain_ring_game_window.build_icon_widget(
+                icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
                     widget_cls=CircleSvgWidget,
                     background_color=player.icon_background_color,
                     stroke_color=player.icon_stroke_color,
@@ -148,7 +152,10 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
                     text=f'{player.name}', color='#d6eaf8',
                 )
                 player_time_label = obj.brain_ring_game_window.build_label_widget(
-                    horizontal_stretch=30, text=f'+ {diff_time} sec', color='#d6eaf8',
+                    horizontal_stretch=30,
+                    text=f'+ {diff_time} sec',
+                    color='#d6eaf8',
+                    alignment=Qt.AlignmentFlag.AlignLeft,
                 )
                 obj.brain_ring_game_window.populate_player_info_horizontal_layout(
                     layout=obj.brain_ring_game_window.first_unpopulated_player_info_layout,
@@ -174,7 +181,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status)
 
         # добавляет виджет на игровую панель с информацией об игроках
-        icon_widget = obj.brain_ring_game_window.build_icon_widget(
+        icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
             widget_cls=CrossSvgWidget,
             background_color=player.icon_background_color,
             stroke_color=player.icon_stroke_color,
@@ -183,7 +190,11 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             text=f'{player.name}', color='#d6eaf8', bold=True,
         )
         player_time_label = obj.brain_ring_game_window.build_label_widget(
-            horizontal_stretch=30, text='False start', color='#d6eaf8', bold=True,
+            horizontal_stretch=30,
+            text='False start',
+            color='#d6eaf8',
+            alignment=Qt.AlignmentFlag.AlignLeft,
+            bold=True,
         )
         obj.brain_ring_game_window.populate_player_info_horizontal_layout(
             layout=obj.brain_ring_game_window.first_unpopulated_player_info_layout,
@@ -200,7 +211,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         )
 
         # добавляет виджет на игровую панель с информацией о заблокированных игроках
-        blocked_info_icon_widget = obj.brain_ring_game_window.build_icon_widget(
+        blocked_info_icon_widget = obj.brain_ring_game_window.build_colored_icon_widget(
             widget_cls=CrossSvgWidget,
             background_color=player.icon_background_color,
             stroke_color=player.icon_stroke_color,

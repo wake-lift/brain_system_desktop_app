@@ -3,10 +3,18 @@ from pathlib import Path
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
-from ui.widgets.base_widgets import ScalableSvgWidget
+from ui.widgets.base_widgets import ScalableColoredSvgWidget, ScalableSvgWidget
 
 
-class CheckCircleSvgWidget(ScalableSvgWidget):
+class BulbSvgWidget(ScalableSvgWidget):
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.template_path: Path = (Path(__file__).absolute().parent.parent.parent / 'assets' / 'images' / 'bulb.svg')
+        self.svg_template: str = self.load_template()
+        self.update_svg()
+
+
+class CheckCircleSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
@@ -23,7 +31,7 @@ class CheckCircleSvgWidget(ScalableSvgWidget):
         self.update_svg()
 
 
-class CircleSvgWidget(ScalableSvgWidget):
+class CircleSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
@@ -40,7 +48,7 @@ class CircleSvgWidget(ScalableSvgWidget):
         self.update_svg()
 
 
-class CrossSvgWidget(ScalableSvgWidget):
+class CrossSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
@@ -52,40 +60,6 @@ class CrossSvgWidget(ScalableSvgWidget):
         self.stroke_color = stroke_color
         self.template_path: Path = (
             Path(__file__).absolute().parent.parent.parent / 'assets' / 'images' / 'cross_round_template.svg'
-        )
-        self.svg_template: str = self.load_template()
-        self.update_svg()
-
-
-class CircleHalfLeftSvgWidget(ScalableSvgWidget):
-    def __init__(
-        self,
-        parent=None,
-        background_color: QColor = QColor(Qt.GlobalColor.white),
-        stroke_color: QColor = QColor(Qt.GlobalColor.black),
-    ) -> None:
-        super().__init__(parent)
-        self.background_color = background_color
-        self.stroke_color = stroke_color
-        self.template_path: Path = (
-            Path(__file__).absolute().parent.parent.parent / 'assets' / 'images' / 'circle_half_left_template.svg'
-        )
-        self.svg_template: str = self.load_template()
-        self.update_svg()
-
-
-class CircleHalfRightSvgWidget(ScalableSvgWidget):
-    def __init__(
-        self,
-        parent=None,
-        background_color: QColor = QColor(Qt.GlobalColor.white),
-        stroke_color: QColor = QColor(Qt.GlobalColor.black),
-    ) -> None:
-        super().__init__(parent)
-        self.background_color = background_color
-        self.stroke_color = stroke_color
-        self.template_path: Path = (
-            Path(__file__).absolute().parent.parent.parent / 'assets' / 'images' / 'circle_half_right_template.svg'
         )
         self.svg_template: str = self.load_template()
         self.update_svg()
