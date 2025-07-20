@@ -429,7 +429,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Настраивает выбранную игру."""
         if self.game_type == GameTypeEnum.BRAIN_RING:
             self.current_game = BrainRingGame()
-            self.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
+            self.current_game.status = BrainRingGameStatusEnum.TIME_IS_UP
+            self.moderator_brain_game_status_label.setText(f'{self.current_game.status.value}')
             self.brain_ring_timer.timer_run_out.connect(slot=lambda: brain_timer_run_out_event_handler(self))
         elif self.game_type == GameTypeEnum.WWW:
             self.current_game = WWWGame()
@@ -439,7 +440,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.www_timer.timer_ten_seconds_left.connect(slot=lambda: www_timer_timer_ten_seconds_left_handler(self))
         elif self.game_type == GameTypeEnum.ERUDITE:
             self.current_game = EruditeGame()
-            self.moderator_erudite_game_status_label.setText(f'{EruditeGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
+            self.current_game.status = EruditeGameStatusEnum.TIME_IS_UP
+            self.moderator_erudite_game_status_label.setText(f'{self.current_game.status.value}')
             self.erudite_timer.timer_run_out.connect(slot=lambda: erudite_timer_run_out_event_handler(self))
 
     def _setup_game_windows(self):
