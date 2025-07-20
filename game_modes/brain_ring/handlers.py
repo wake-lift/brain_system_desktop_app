@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from PyQt6.QtCore import QTime, Qt
 from PyQt6.QtGui import QColor
 
-from config.enums import GameTypeEnum, SoundFilesEnum
+from config.enums import ColorSchemaEnum, GameTypeEnum, SoundFileEnum
 from game_modes.brain_ring.game import BrainRingGame
 from game_modes.player import Player
 from game_modes.brain_ring.enums import BrainRingGameStatusEnum
@@ -85,7 +85,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         player.is_blocked = True
         remaining_time = obj.brain_ring_timer.pause()
         obj.current_game.first_button_pressed_time = QTime.currentTime()
-        obj.play_sound_file(SoundFilesEnum.BRAIN_PLAYER_BUTTON_PRESSED)
+        obj.play_sound_file(SoundFileEnum.BRAIN_PLAYER_BUTTON_PRESSED)
         obj.current_game.status = BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED
         obj.moderator_brain_game_status_label.setText(
             f'{BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED.value}: {player.name}',
@@ -101,12 +101,12 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             stroke_color=player.icon_stroke_color,
         )
         player_name_label = obj.brain_ring_game_window.build_label_widget(
-            text=f'{player.name}', color='#d6eaf8', bold=True,
+            text=f'{player.name}', color=ColorSchemaEnum.BRAIN_PLAYER_NAME_LABEL, bold=True,
         )
         player_time_label = obj.brain_ring_game_window.build_label_widget(
             horizontal_stretch=30,
             text=f'{remaining_time} sec',
-            color='#d6eaf8',
+            color=ColorSchemaEnum.BRAIN_PLAYER_TIME_LABEL,
             alignment=Qt.AlignmentFlag.AlignLeft,
             bold=True,
         )
@@ -149,12 +149,12 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
                     stroke_color=player.icon_stroke_color,
                 )
                 player_name_label = obj.brain_ring_game_window.build_label_widget(
-                    text=f'{player.name}', color='#d6eaf8',
+                    text=f'{player.name}', color=ColorSchemaEnum.BRAIN_NOT_FIRST_PLAYER_NAME_LABEL
                 )
                 player_time_label = obj.brain_ring_game_window.build_label_widget(
                     horizontal_stretch=30,
                     text=f'+ {diff_time} sec',
-                    color='#d6eaf8',
+                    color=ColorSchemaEnum.BRAIN_NOT_FIRST_PLAYER_TIME_LABEL,
                     alignment=Qt.AlignmentFlag.AlignLeft,
                 )
                 obj.brain_ring_game_window.populate_player_info_horizontal_layout(
@@ -173,7 +173,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         # Обработка логики для игрока, допустившего фальстарт
         obj.current_game.is_false_start_active = True
         player.is_blocked = True
-        obj.play_sound_file(SoundFilesEnum.BRAIN_PLAYER_FALSE_START)
+        obj.play_sound_file(SoundFileEnum.BRAIN_PLAYER_FALSE_START)
         obj.current_game.status = BrainRingGameStatusEnum.FALSE_START
         obj.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.FALSE_START.value}: {player.name}')
 
@@ -187,12 +187,12 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             stroke_color=player.icon_stroke_color,
         )
         player_name_label = obj.brain_ring_game_window.build_label_widget(
-            text=f'{player.name}', color='#d6eaf8', bold=True,
+            text=f'{player.name}', color=ColorSchemaEnum.BRAIN_PLAYER_NAME_LABEL, bold=True,
         )
         player_time_label = obj.brain_ring_game_window.build_label_widget(
             horizontal_stretch=30,
             text='False start',
-            color='#d6eaf8',
+            color=ColorSchemaEnum.BRAIN_PLAYER_TIME_LABEL,
             alignment=Qt.AlignmentFlag.AlignLeft,
             bold=True,
         )

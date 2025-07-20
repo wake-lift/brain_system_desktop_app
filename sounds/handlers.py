@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from PyQt6.QtCore import QUrl
 from PyQt6.QtMultimedia import QMediaPlayer
 
-from config.enums import SoundFilesEnum
+from config.enums import SoundFileEnum
 
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 def select_audio_track_handler(obj: MainWindow, chosen_text: str):
-    chosen_file_name: str = SoundFilesEnum.get_item_by_label(chosen_text).value
+    chosen_file_name: str = SoundFileEnum.get_item_by_label(chosen_text).value
     path_to_file = Path(__file__).absolute().parent.parent / 'assets' / 'sounds' / chosen_file_name
     obj.current_audio_file = QUrl.fromLocalFile(str(path_to_file))
     obj.audio_player.setSource(obj.current_audio_file)

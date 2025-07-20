@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from PyQt6.QtCore import QTime
 from PyQt6.QtGui import QColor
 
-from config.enums import GameTypeEnum, SoundFilesEnum
+from config.enums import GameTypeEnum, SoundFileEnum
 from game_modes.erudite.enums import EruditeGameStatusEnum
 from game_modes.erudite.game import EruditeGame
 from game_modes.player import Player
@@ -61,7 +61,7 @@ def erudite_player_key_press_handler(obj: MainWindow, player: Player):
         player.is_blocked = True
         remaining_time = obj.erudite_timer.pause()
         obj.current_game.first_button_pressed_time = QTime.currentTime()
-        obj.play_sound_file(SoundFilesEnum.BRAIN_PLAYER_BUTTON_PRESSED)
+        obj.play_sound_file(SoundFileEnum.BRAIN_PLAYER_BUTTON_PRESSED)
         obj.current_game.status = EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED
         obj.moderator_erudite_game_status_label.setText(
             f'{EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED.value}: {player.name}',

@@ -30,7 +30,7 @@ from config.handlers import (
     yellow_player_check_box_handler,
     yellow_player_set_team_name_line_edit_handler,
 )
-from config.enums import GameTypeEnum, SoundFilesEnum
+from config.enums import GameTypeEnum, SoundFileEnum
 from core.timer import CustomTimer
 from game_modes.brain_ring.game import BrainRingGame
 from game_modes.erudite.enums import EruditeGameStatusEnum
@@ -53,7 +53,7 @@ from game_modes.brain_ring.handlers import (
 )
 from game_modes.what_where_when.game import WWWGame
 from game_modes.what_where_when.handlers import (
-    set_www_game_info_label_text,
+    set_www_round_status_info_text,
     www_choose_blitz_radio_button_handler,
     www_choose_regular_question_radio_button_handler,
     www_choose_super_blitz_radio_button_handler,
@@ -79,7 +79,9 @@ from ui.brain_ring_game_window import BrainRingGameWindow
 from ui.widgets.brain_ring_game_timer_widget import BrainRingGameTimerWidget
 from ui.widgets.brain_ring_moderator_timer_widget import BrainRingModeratorTimerWidget
 from ui.widgets.erudite_moderator_timer_widget import EruditeModeratorTimerWidget
+from ui.widgets.www_game_timer_widget import WWWGameTimerWidget
 from ui.widgets.www_moderator_timer_widget import WwwModeratorTimerWidget
+from ui.www_game_window import WWWGameWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -99,6 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.erudite_timer = CustomTimer(initial_time=self.app_config.erudite_round_time)
 
         self.brain_ring_game_window = BrainRingGameWindow(self)
+        self.www_game_window = WWWGameWindow(self)
 
         self._setup_audio_player()
         self._populate_settings_widgets()
@@ -182,7 +185,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for player in self.enabled_players:
             player.is_already_displayed_on_widget = False
 
-    def play_sound_file(self, sound_file_name: SoundFilesEnum):
+    def play_sound_file(self, sound_file_name: SoundFileEnum):
         """Воспроизводит указанный звуковой файл."""
         path_to_file = Path(__file__).absolute().parent.parent / 'assets' / 'sounds' / sound_file_name.value
         audio_file = QUrl.fromLocalFile(str(path_to_file))
@@ -262,7 +265,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.audio_player.setAudioOutput(self.audio_output)
         self.audio_output.setVolume(self.sound_panel_vertical_slider.value() / 100)
 
-        self.select_sound_combo_box.addItems(item.label for item in SoundFilesEnum if 'Брейн-ринг' not in item.label)
+        self.select_sound_combo_box.addItems(item.label for item in SoundFileEnum if 'Брейн-ринг' not in item.label)
         self.select_sound_combo_box.setCurrentIndex(-1)
 
         self.select_sound_combo_box.currentTextChanged.connect(
@@ -440,12 +443,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Настраивает игровые окна."""
         # настройка игрового окна брейн-ринга
         self.open_brain_ring_window_button.clicked.connect(self._open_brain_ring_game_window_button_handler)
-        brain_ring_game_timer_widget = BrainRingGameTimerWidget(
+        self.brain_ring_game_timer_widget = BrainRingGameTimerWidget(
             self.brain_ring_game_window, timer=self.brain_ring_timer,
         )
         self.brain_ring_game_window.brain_game_window_info_timer_widget_vertical_layout.addWidget(
-            brain_ring_game_timer_widget,
+            self.brain_ring_game_timer_widget,
         )
+        # настройка игрового окна ЧГК
+        self.open_www_window_button.clicked.connect(self._open_www_window_button_handler)
+        self.www_game_timer_widget = WWWGameTimerWidget(self.www_game_window, timer=self.www_timer)
+        self.www_game_window.www_window_game_widget_horizontal_layout.addWidget(self.www_game_timer_widget)
+        if isinstance(self.current_game, WWWGame):
+            self.www_game_window.update_round_info_widget(text=self.current_game.round_mode.label)
 
     def _open_brain_ring_game_window_button_handler(self):
         """Обработчик нажатия кнопки "Открыть игровое окно (брейн-ринг)"."""
@@ -453,6 +462,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.brain_ring_game_window.hide()
         else:
             self.brain_ring_game_window.show()
+
+    def _open_www_window_button_handler(self):
+        """Обработчик нажатия кнопки "Открыть игровое окно (ЧГК)"."""
+        if self.www_game_window.isVisible():
+            self.www_game_window.hide()
+        else:
+            self.www_game_window.show()
 
     def _setup_game_widgets(self):
         """Настраивает игровые панели ведущего."""
@@ -471,7 +487,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.main_window_www_timer_widget_vertical_layout.addWidget(self.main_window_www_timer_label)
         if isinstance(self.current_game, WWWGame):
-            set_www_game_info_label_text(self)
+            set_www_round_status_info_text(self)
         else:
             self.main_window_www_game_info_label.setText('')
         self.main_window_erudite_info_timer_label = EruditeModeratorTimerWidget(

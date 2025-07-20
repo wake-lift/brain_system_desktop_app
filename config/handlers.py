@@ -8,6 +8,7 @@ from config.config import AppConfig
 from config.enums import GameTypeEnum
 from core.timer import CustomTimer
 from ui.brain_ring_game_window import BrainRingGameWindow
+from ui.www_game_window import WWWGameWindow
 
 
 if TYPE_CHECKING:
@@ -213,11 +214,17 @@ def _reinitialize_app_data(obj: MainWindow):
     obj.MAP_BUTTONS_TO_ENABLED_PLAYERS = obj._setup_players()
     obj.enabled_players = list(obj.MAP_BUTTONS_TO_ENABLED_PLAYERS.values())
 
-    # закрываем и пересоздаем игровые окна
+    # закрываем и создаем заново игровые окна
     obj.brain_ring_game_window.close()
     obj.brain_ring_game_window.deleteLater()
     obj.brain_ring_game_window = None
     obj.open_brain_ring_window_button.clicked.disconnect()
     obj.brain_ring_game_window = BrainRingGameWindow(obj)
+
+    obj.www_game_window.close()
+    obj.www_game_window.deleteLater()
+    obj.www_game_window = None
+    obj.open_www_window_button.clicked.disconnect()
+    obj.www_game_window = WWWGameWindow(obj)
 
     obj._setup_game_windows()

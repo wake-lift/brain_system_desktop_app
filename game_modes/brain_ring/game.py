@@ -4,6 +4,8 @@ from game_modes.brain_ring.enums import BrainRingGameStatusEnum
 
 
 class BrainRingGame:
+    """Класс с параметрами игры в брейн-ринг."""
+
     def __init__(
         self,
         status: BrainRingGameStatusEnum = BrainRingGameStatusEnum.READY_TO_START_COUNTDOWN,

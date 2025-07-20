@@ -7,6 +7,8 @@ from game_modes.what_where_when.enums import (
 
 
 class WWWGame:
+    """Класс с параметрами игры в ЧГК."""
+
     def __init__(
         self,
         status: WWWGameStatusEnum = WWWGameStatusEnum.READY,

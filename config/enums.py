@@ -1,8 +1,8 @@
 from core.enums import StrLabelEnum
 
 
-class SoundFilesEnum(StrLabelEnum):
-    """All available sound patterns with paths to files and human readable labels."""
+class SoundFileEnum(StrLabelEnum):
+    """Доступные звуковые файлы с человекочитаемыми названиями."""
 
     OPENING = 'chgk_opening.mp3', 'Начало игры (заглавная тема)'
     WHIPPING_TOP = 'chgk_whipping_top.mp3', 'Волчок (мелодия)'
@@ -22,8 +22,51 @@ class SoundFilesEnum(StrLabelEnum):
 
 
 class GameTypeEnum(StrLabelEnum):
+    """Доступные режимы игры."""
 
-    """All available game types."""
     BRAIN_RING = 'brain_ring', 'Брейн-ринг'
     WWW = 'what_where_when', 'Что-Где-Когда'
     ERUDITE = 'erudite', 'Эрудитка'
+
+
+class ColorSchemaEnum(StrLabelEnum):
+    """Цвета, используемые в программе и виджетах."""
+
+    RED = '#FF0000', 'Базовый цвет красной кнопки (игрока)'
+    GREEN = '#008000', 'Базовый цвет зеленой кнопки (игрока)'
+    BLUE = '#0000FF', 'Базовый цвет синей кнопки (игрока)'
+    YELLOW = '#FFFF00', 'Базовый цвет желтой кнопки (игрока)'
+    WHITE = '#FFFFFF', 'Базовый цвет белой кнопки (игрока)'
+    BLACK = '#000000', 'Базовый цвет черной кнопки (игрока)'
+
+    DEFAULT_SCALABLE_LABEL = '#17202a', 'Дефолтный цвет текстового лейбла'
+
+    BRAIN_GAME_WIDGET_BACKGROUND = '#122560', 'Цвет основного фона игрового виджета брейн-ринга'
+    BRAIN_PLAYER_NAME_LABEL = '#FFFFFF', 'Цвет названия игрока на игровом виджете (брейн-ринг)'
+    BRAIN_NOT_FIRST_PLAYER_NAME_LABEL = '#778899', 'Цвет названия не первого игрока на игровом виджете (брейн-ринг)'
+    BRAIN_PLAYER_TIME_LABEL = '#FFFFFF', 'Цвет времени игрока на игровом виджете (брейн-ринг)'
+    BRAIN_NOT_FIRST_PLAYER_TIME_LABEL = '#778899', 'Цвет времени не первого игрока на игровом виджете (брейн-ринг)'
+    BRAIN_RING_GAME_TIMER_INITIAL = '#000000', 'Исходный цвет времени на игровом виджете (брейн-ринг)'
+    BRAIN_RING_GAME_TIMER_START = '#2C97FF', 'Цвет времени на игровом виджете (брейн-ринг) после старта таймера'
+    BRAIN_RING_GAME_TIMER_5_SEC_LEFT = '#FF9900', 'Цвет времени на игровом виджете (брейн-ринг) (осталось < 5 сек)'
+    BRAIN_RING_GAME_TIMER_RUN_OUT = '#E4002A', 'Цвет времени на игровом виджете (брейн-ринг) при истечении таймера'
+    BRAIN_RING_MODERATOR_TIMER_INITIAL = '#000000', 'Исходный цвет времени на виджете ведущего (брейн-ринг)'
+    BRAIN_RING_MODERATOR_TIMER_START = '#2C97FF', 'Цвет времени виджете ведущего (брейн-ринг) после старта таймера'
+    BRAIN_RING_MODERATOR_TIMER_5_SEC_LEFT = '#CC6432', 'Цвет времени виджете ведущего (брейн-ринг) (осталось < 5 сек)'
+    BRAIN_RING_MODERATOR_TIMER_RUN_OUT = '#CC0000', 'Цвет времени виджете ведущего (брейн-ринг) при истечении таймера'
+
+    WWW_GAME_WIDGET_BACKGROUND = '#122560', 'Цвет основного фона игрового виджета ЧГК'
+    WWW_ROUND_STATUS_LABEL = '#B0C4DE', 'Цвет информации о статусе раунда на игровом виджете (ЧГК)'
+    WWW_GAME_TIMER_INITIAL = '#2C97FF', 'Исходный цвет времени на игровом виджете (ЧГК)'
+    WWW_GAME_TIMER_START = '#2C97FF', 'Цвет времени на игровом виджете (ЧГК) после старта таймера'
+    WWW_GAME_TIMER_10_SEC_LEFT = '#D27E00', 'Цвет времени на игровом виджете (ЧГК) (осталось < 10 сек)'
+    WWW_GAME_TIMER_RUN_OUT = '#E4002A', 'Цвет времени на игровом виджете (ЧГК) при истечении таймера'
+    WWW_GAME_TIMER_PROVIDE_ANSWERS = '#BF1D02', 'Цвет времени на игровом виджете (ЧГК) (время на сбор ответов)'
+    WWW_MODERATOR_TIMER_INITIAL = '#000000', 'Исходный цвет времени на виджете ведущего (ЧГК)'
+    WWW_MODERATOR_TIMER_10_SEC_LEFT = '#D27E00', 'Цвет времени виджете ведущего (ЧГК) (осталось < 10 сек)'
+    WWW_MODERATOR_TIMER_PROVIDE_ANSWERS = '#BF1D02', 'Цвет времени виджете ведущего (ЧГК) (время на сбор ответов)'
+
+    ERUDITE_MODERATOR_TIMER_INITIAL = '#000000', 'Исходный цвет времени на виджете ведущего (эрудитка)'
+    ERUDITE_MODERATOR_TIMER_START = '#2C97FF', 'Цвет времени виджете ведущего (эрудитка) после старта таймера'
+    ERUDITE_MODERATOR_TIMER_5_SEC_LEFT = '#CC6432', 'Цвет времени виджете ведущего (эрудитка) (осталось < 5 сек)'
+    ERUDITE_MODERATOR_TIMER_RUN_OUT = '#CC0000', 'Цвет времени виджете ведущего (эрудитка) при истечении таймера'

@@ -8,7 +8,7 @@ app_config = AppConfig()
 
 
 class PlayerPressedKeyEnum(StrLabelEnum):
-    """All available keyboard keys, which can be pressed by players."""
+    """Клавиши клавиатуры, связанные с игроками."""
 
     RED = '1', 'red'
     GREEN = '2', 'green'
@@ -19,7 +19,7 @@ class PlayerPressedKeyEnum(StrLabelEnum):
 
 
 class ModeratorPressedKeyEnum(StrEnum):
-    """All available keyboard keys, which can be pressed by moderator."""
+    """Клавиши клавиатуры, связанные с ведущим."""
 
     START_RESUME = app_config.brain_ring_start_resume_key
     RESET_PAUSE = app_config.brain_ring_reset_pause_key

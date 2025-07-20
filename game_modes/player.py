@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from PyQt6.QtCore import Qt
+from config.enums import ColorSchemaEnum
 from keyboard.enums import PlayerPressedKeyEnum
 
 
@@ -15,12 +15,12 @@ class Player():
 
     def __init__(self, obj: MainWindow, button_color: PlayerPressedKeyEnum) -> None:
         self.MAP_PLAYER_COLOR_QCOLOR = {
-            PlayerPressedKeyEnum.RED.label: Qt.GlobalColor.red,
-            PlayerPressedKeyEnum.GREEN.label: Qt.GlobalColor.green,
-            PlayerPressedKeyEnum.BLUE.label: Qt.GlobalColor.blue,
-            PlayerPressedKeyEnum.YELLOW.label: Qt.GlobalColor.yellow,
-            PlayerPressedKeyEnum.WHITE.label: Qt.GlobalColor.white,
-            PlayerPressedKeyEnum.BLACK.label: Qt.GlobalColor.black,
+            PlayerPressedKeyEnum.RED.label: ColorSchemaEnum.RED,
+            PlayerPressedKeyEnum.GREEN.label: ColorSchemaEnum.GREEN,
+            PlayerPressedKeyEnum.BLUE.label: ColorSchemaEnum.BLUE,
+            PlayerPressedKeyEnum.YELLOW.label: ColorSchemaEnum.YELLOW,
+            PlayerPressedKeyEnum.WHITE.label: ColorSchemaEnum.WHITE,
+            PlayerPressedKeyEnum.BLACK.label: ColorSchemaEnum.BLACK,
         }
 
         match button_color:
@@ -52,13 +52,13 @@ class Player():
         self.is_already_displayed_on_widget = False
 
     @property
-    def icon_stroke_color(self) -> Qt.GlobalColor:
+    def icon_stroke_color(self) -> ColorSchemaEnum:
         """Указатель цвета, которым для данного игрока необходимо окрашивать обводку игровых значков."""
         if self.color == PlayerPressedKeyEnum.BLACK.label:
-            return Qt.GlobalColor.white
-        return Qt.GlobalColor.black
+            return ColorSchemaEnum.WHITE
+        return ColorSchemaEnum.BLACK
 
     @property
-    def icon_background_color(self) -> Qt.GlobalColor:
+    def icon_background_color(self) -> ColorSchemaEnum:
         """Указатель цвета, которым для данного игрока необходимо окрашивать внутреннюю заливку игровых значков."""
         return self.MAP_PLAYER_COLOR_QCOLOR[self.color]

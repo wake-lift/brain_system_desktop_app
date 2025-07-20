@@ -3,7 +3,7 @@ from pathlib import Path
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
-from ui.widgets.base_widgets import ScalableColoredSvgWidget, ScalableSvgWidget
+from core.widgets import ScalableColoredSvgWidget, ScalableSvgWidget
 
 
 class BulbSvgWidget(ScalableSvgWidget):

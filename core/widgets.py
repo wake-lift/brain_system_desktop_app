@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 from PyQt6.QtCore import QByteArray, QRectF, QSize, QUrl, Qt
 from PyQt6.QtSvgWidgets import QSvgWidget
 
-from config.enums import SoundFilesEnum
+from config.enums import SoundFileEnum
 from core.timer import CustomTimer
 
 
@@ -27,6 +27,7 @@ class TimerAndSoundBaseWidget(QWidget):
         self.audio_output: QAudioOutput | None = audio_output
         self.initial_time: float = timer.initial_time / 1000
         self.time_label: QLabel | None = None
+        self.font_size_ratio: float = 0.3
         self.timer.timer.timeout.connect(self.update_display)
         self.timer.timer_start.connect(self.handle_timer_start)
         self.timer.timer_run_out.connect(self.handle_timer_run_out)
@@ -39,9 +40,9 @@ class TimerAndSoundBaseWidget(QWidget):
         palette.setColor(QPalette.ColorRole.WindowText, color)
         self.time_label.setPalette(palette)
 
-    def play_sound(self, sound_file_name: SoundFilesEnum) -> None:
+    def play_sound(self, sound_file_name: SoundFileEnum) -> None:
         """Воспроизводит переданный звуковой файл."""
-        path_to_file = Path(__file__).absolute().parent.parent.parent / 'assets' / 'sounds' / sound_file_name.value
+        path_to_file = Path(__file__).absolute().parent.parent / 'assets' / 'sounds' / sound_file_name.value
         self.current_audio_file = QUrl.fromLocalFile(str(path_to_file))
         self.audio_player.setSource(self.current_audio_file)
         self.audio_player.play()
