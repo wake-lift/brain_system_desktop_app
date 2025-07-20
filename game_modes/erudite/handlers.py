@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from PyQt6.QtCore import QTime
+from PyQt6.QtCore import QTime, Qt
 from PyQt6.QtGui import QColor
 
-from config.enums import GameTypeEnum, SoundFileEnum
+from config.enums import ColorSchemaEnum, GameTypeEnum, SoundFileEnum
 from game_modes.erudite.enums import EruditeGameStatusEnum
 from game_modes.erudite.game import EruditeGame
 from game_modes.player import Player
-from ui.widgets.icon_widgets import CrossSvgWidget
+from ui.widgets.icon_widgets import CheckCircleSvgWidget, CircleSvgWidget, CrossSvgWidget
 
 
 if TYPE_CHECKING:
@@ -37,7 +37,22 @@ def erudite_moderator_reset_pause_push_button_handler(obj: MainWindow) -> None:
         obj.current_game.status = EruditeGameStatusEnum.READY_TO_START_COUNTDOWN
         obj.moderator_erudite_game_status_label.setText(f'{EruditeGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
         obj.clear_erudite_info_labels()
+        obj.erudite_game_window.clear_all_player_info_horizontal_layouts()
         obj.reset_all_enabled_players_widget_display()
+        # Находим на панели заблокированных игроков виджет игрока, давшего неправильный ответ,
+        # и меняем его виджет на тот же, что у остальных
+        layout = obj.erudite_game_window.erudite_game_window_blocked_players_indicator_widget_horizontal_layout
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if widget := item.widget():
+                if isinstance(widget, CheckCircleSvgWidget):
+                    blocked_info_icon_widget = obj.erudite_game_window.build_colored_icon_widget(
+                        widget_cls=CrossSvgWidget,
+                        background_color=widget.background_color,
+                        stroke_color=widget.stroke_color,
+                    )
+                    widget.deleteLater()
+                    obj.erudite_game_window.add_widget_to_blocked_players_indicator_layout(blocked_info_icon_widget)
 
 
 def erudite_moderator_reset_round_push_button_handler(obj: MainWindow):
@@ -50,10 +65,12 @@ def erudite_moderator_reset_round_push_button_handler(obj: MainWindow):
     obj.moderator_erudite_game_status_label.setText(f'{EruditeGameStatusEnum.READY_TO_START_COUNTDOWN.value}')
     obj.clear_erudite_info_labels()
     obj.clear_layout(obj.main_window_erudite_blocked_players_indicator_widget_horizontal_layout)
+    obj.erudite_game_window.clear_all_player_info_horizontal_layouts()
+    obj.erudite_game_window.clear_blocked_players_indicator_layout()
 
 
 def erudite_player_key_press_handler(obj: MainWindow, player: Player):
-    """Обработчик нажатия кнопки ведущего "СБРОС ПАУЗЫ" на панели управления (эрудитка)."""
+    """Обработчик нажатия кнопки игрока (эрудитка)."""
     if any([player.is_blocked, not player.is_enbled, not isinstance(obj.current_game, EruditeGame)]):
         return
     if obj.current_game.status == EruditeGameStatusEnum.COUNTDOWN_STARTED:
@@ -66,12 +83,42 @@ def erudite_player_key_press_handler(obj: MainWindow, player: Player):
         obj.moderator_erudite_game_status_label.setText(
             f'{EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED.value}: {player.name}',
         )
+        # добавляет виджет на панель ведущего с информацией об игроках
         obj.set_erudite_info_label(player=player, game_status=obj.current_game.status, remaining_time=remaining_time)
         obj.main_window_erudite_blocked_players_indicator_widget_horizontal_layout.addWidget(
             CrossSvgWidget(
                 background_color=QColor(player.icon_background_color), stroke_color=QColor(player.icon_stroke_color),
             ),
         )
+        # добавляет виджет на игровую панель с информацией об игроках
+        icon_widget = obj.erudite_game_window.build_colored_icon_widget(
+            widget_cls=CheckCircleSvgWidget,
+            background_color=player.icon_background_color,
+            stroke_color=player.icon_stroke_color,
+        )
+        player_name_label = obj.erudite_game_window.build_label_widget(
+            text=f'{player.name}', color=ColorSchemaEnum.ERUDITE_PLAYER_NAME_LABEL, bold=True,
+        )
+        player_time_label = obj.erudite_game_window.build_label_widget(
+            horizontal_stretch=30,
+            text=f'{remaining_time} sec',
+            color=ColorSchemaEnum.ERUDITE_PLAYER_TIME_LABEL,
+            alignment=Qt.AlignmentFlag.AlignLeft,
+            bold=True,
+        )
+        obj.erudite_game_window.populate_player_info_horizontal_layout(
+            layout=obj.erudite_game_window.first_unpopulated_player_info_layout,
+            left_widget=icon_widget,
+            central_widget=player_name_label,
+            right_widget=player_time_label,
+        )
+        # добавляет виджет на игровую панель с информацией о заблокированных игроках
+        blocked_info_icon_widget = obj.erudite_game_window.build_colored_icon_widget(
+            widget_cls=CheckCircleSvgWidget,
+            background_color=player.icon_background_color,
+            stroke_color=player.icon_stroke_color,
+        )
+        obj.erudite_game_window.add_widget_to_blocked_players_indicator_layout(blocked_info_icon_widget)
 
     elif obj.current_game.status == EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED:
         # Обработка логики для игроков, которые нажали кнопку, но не были первыми
@@ -79,7 +126,29 @@ def erudite_player_key_press_handler(obj: MainWindow, player: Player):
             if not player.is_already_displayed_on_widget:
                 current_time = QTime.currentTime()
                 diff_time = round((obj.current_game.first_button_pressed_time.msecsTo(current_time) / 1000.0), 3)
+                # добавляет виджет на панель ведущего с информацией об игроках
                 obj.set_erudite_info_label(player=player, game_status=obj.current_game.status, diff_time=diff_time)
+                # добавляет виджет на игровую панель с информацией об игроках
+                icon_widget = obj.erudite_game_window.build_colored_icon_widget(
+                    widget_cls=CircleSvgWidget,
+                    background_color=player.icon_background_color,
+                    stroke_color=player.icon_stroke_color,
+                )
+                player_name_label = obj.erudite_game_window.build_label_widget(
+                    text=f'{player.name}', color=ColorSchemaEnum.ERUDITE_NOT_FIRST_PLAYER_NAME_LABEL
+                )
+                player_time_label = obj.erudite_game_window.build_label_widget(
+                    horizontal_stretch=30,
+                    text=f'+ {diff_time} sec',
+                    color=ColorSchemaEnum.ERUDITE_NOT_FIRST_PLAYER_TIME_LABEL,
+                    alignment=Qt.AlignmentFlag.AlignLeft,
+                )
+                obj.erudite_game_window.populate_player_info_horizontal_layout(
+                    layout=obj.erudite_game_window.first_unpopulated_player_info_layout,
+                    left_widget=icon_widget,
+                    central_widget=player_name_label,
+                    right_widget=player_time_label,
+                )
                 player.is_already_displayed_on_widget = True
 
 

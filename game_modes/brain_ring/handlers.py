@@ -91,7 +91,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             f'{BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED.value}: {player.name}',
         )
 
-        # добавляет виджет на панель модератора с информацией об игроках
+        # добавляет виджет на панель ведущего с информацией об игроках
         obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, remaining_time=remaining_time)
 
         # добавляет виджет на игровую панель с информацией об игроках
@@ -117,7 +117,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             right_widget=player_time_label,
         )
 
-        # добавляет виджет на панель модератора с информацией о заблокированных игроках
+        # добавляет виджет на панель ведущего с информацией о заблокированных игроках
         obj.main_window_brain_blocked_players_indicator_widget_horizontal_layout.addWidget(
             CrossSvgWidget(
                 background_color=QColor(player.icon_background_color), stroke_color=QColor(player.icon_stroke_color),
@@ -139,7 +139,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
                 current_time = QTime.currentTime()
                 diff_time = round((obj.current_game.first_button_pressed_time.msecsTo(current_time) / 1000.0), 3)
 
-                # добавляет виджет на панель модератора с информацией об игроках
+                # добавляет виджет на панель ведущего с информацией об игроках
                 obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status, diff_time=diff_time)
 
                 # добавляет виджет на игровую панель с информацией об игроках
@@ -177,7 +177,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
         obj.current_game.status = BrainRingGameStatusEnum.FALSE_START
         obj.moderator_brain_game_status_label.setText(f'{BrainRingGameStatusEnum.FALSE_START.value}: {player.name}')
 
-        # добавляет виджет на панель модератора с информацией об игроках
+        # добавляет виджет на панель ведущего с информацией об игроках
         obj.set_brain_ring_info_label(player=player, game_status=obj.current_game.status)
 
         # добавляет виджет на игровую панель с информацией об игроках
@@ -203,7 +203,7 @@ def brain_ring_player_key_press_handler(obj: MainWindow, player: Player):
             right_widget=player_time_label,
         )
 
-        # добавляет виджет на панель модератора с информацией о заблокированных игроках
+        # добавляет виджет на панель ведущего с информацией о заблокированных игроках
         obj.main_window_brain_blocked_players_indicator_widget_horizontal_layout.addWidget(
             CrossSvgWidget(
                 background_color=QColor(player.icon_background_color), stroke_color=QColor(player.icon_stroke_color),

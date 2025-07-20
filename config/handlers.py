@@ -8,6 +8,7 @@ from config.config import AppConfig
 from config.enums import GameTypeEnum
 from core.timer import CustomTimer
 from ui.brain_ring_game_window import BrainRingGameWindow
+from ui.erudite_game_window import EruditeGameWindow
 from ui.www_game_window import WWWGameWindow
 
 
@@ -226,5 +227,11 @@ def _reinitialize_app_data(obj: MainWindow):
     obj.www_game_window = None
     obj.open_www_window_button.clicked.disconnect()
     obj.www_game_window = WWWGameWindow(obj)
+
+    obj.erudite_game_window.close()
+    obj.erudite_game_window.deleteLater()
+    obj.erudite_game_window = None
+    obj.open_erudite_window_button.clicked.disconnect()
+    obj.erudite_game_window = EruditeGameWindow(obj)
 
     obj._setup_game_windows()
