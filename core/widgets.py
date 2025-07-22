@@ -66,6 +66,11 @@ class TimerAndSoundBaseWidget(QWidget):
         self.setLayout(layout)
         self.min_font_size = 12
         self.update_font_size()
+    
+    @abstractmethod
+    def update_font_size(self):
+        """Обновление размера шрифта в соответствии с размером окна."""
+        raise NotImplementedError
 
     @abstractmethod
     def update_display(self) -> None:

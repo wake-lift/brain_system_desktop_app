@@ -3,15 +3,7 @@ from pathlib import Path
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
-from core.widgets import ScalableColoredSvgWidget, ScalableSvgWidget
-
-
-class BulbSvgWidget(ScalableSvgWidget):
-    def __init__(self, parent=None) -> None:
-        super().__init__(parent)
-        self.template_path: Path = (Path(__file__).absolute().parent.parent.parent / 'assets' / 'images' / 'bulb.svg')
-        self.svg_template: str = self.load_template()
-        self.update_svg()
+from core.widgets import ScalableColoredSvgWidget
 
 
 class CheckCircleSvgWidget(ScalableColoredSvgWidget):

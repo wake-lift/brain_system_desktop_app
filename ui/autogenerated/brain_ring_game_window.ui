@@ -55,19 +55,25 @@
         <widget class="QWidget" name="brain_game_window_info_timer_left_widget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>30</horstretch>
+           <horstretch>25</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <layout class="QVBoxLayout" name="brain_game_window_info_timer_left_widget_vertical_layout">
           <property name="spacing">
-           <number>1</number>
+           <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>50</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
+           <number>50</number>
           </property>
          </layout>
         </widget>
@@ -76,7 +82,7 @@
         <widget class="QWidget" name="brain_game_window_info_timer_widget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>40</horstretch>
+           <horstretch>50</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
@@ -87,19 +93,25 @@
         <widget class="QWidget" name="brain_game_window_info_timer_right_widget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>30</horstretch>
+           <horstretch>25</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <layout class="QVBoxLayout" name="brain_game_window_info_timer_right_widget_vertical_layout">
           <property name="spacing">
-           <number>1</number>
+           <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>50</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>50</number>
           </property>
          </layout>
         </widget>

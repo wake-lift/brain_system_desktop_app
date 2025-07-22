@@ -55,7 +55,7 @@ class Player():
     def icon_stroke_color(self) -> ColorSchemaEnum:
         """Указатель цвета, которым для данного игрока необходимо окрашивать обводку игровых значков."""
         if self.color == PlayerPressedKeyEnum.BLACK.label:
-            return ColorSchemaEnum.WHITE
+            return ColorSchemaEnum.BLACK_PLAYER_STROKE
         return ColorSchemaEnum.BLACK
 
     @property
