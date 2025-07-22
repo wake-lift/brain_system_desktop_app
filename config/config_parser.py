@@ -1,5 +1,12 @@
-from configparser import ConfigParser, SectionProxy
+from __future__ import annotations
+
+from configparser import ConfigParser
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from configparser import SectionProxy
 
 
 CONFIG_FILE_PATH = Path(__file__).parent.parent.absolute() / 'config.ini'

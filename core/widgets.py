@@ -1,14 +1,21 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from PyQt6.QtGui import QColor, QFont, QPaintEvent, QPainter, QPalette
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
-from PyQt6.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 from PyQt6.QtCore import QByteArray, QRectF, QSize, QUrl, Qt
+from PyQt6.QtGui import QColor, QFont, QPainter, QPalette
 from PyQt6.QtSvgWidgets import QSvgWidget
+from PyQt6.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 
-from config.enums import SoundFileEnum
-from core.timer import CustomTimer
+
+if TYPE_CHECKING:
+    from PyQt6.QtGui import QPaintEvent
+    from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+
+    from config.enums import SoundFileEnum
+    from core.timer import CustomTimer
 
 
 class TimerAndSoundBaseWidget(QWidget):
@@ -66,7 +73,7 @@ class TimerAndSoundBaseWidget(QWidget):
         self.setLayout(layout)
         self.min_font_size = 12
         self.update_font_size()
-    
+
     @abstractmethod
     def update_font_size(self):
         """Обновление размера шрифта в соответствии с размером окна."""

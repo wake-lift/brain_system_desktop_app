@@ -1,17 +1,23 @@
-from configparser import ConfigParser
-from pathlib import Path
-from typing import List
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List
+
 from config.config_parser import (
     CONFIG_FILE_PATH,
     brain_ring_config,
-    erudite_config,
-    player_buttons_config,
     config,
+    erudite_config,
     general_config,
     moderator_buttons_config,
+    player_buttons_config,
     www_config,
 )
 from config.default_config import DEFAULT_CONFIG
+
+
+if TYPE_CHECKING:
+    from configparser import ConfigParser
+    from pathlib import Path
 
 
 class AppConfig:

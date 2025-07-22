@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QSizePolicy
 
 from config.enums import ColorSchemaEnum
-from core.widgets import ScalableLabel, ScalableColoredSvgWidget, ScalableSvgWidget
+from core.widgets import ScalableLabel
+
+
+if TYPE_CHECKING:
+    from core.widgets import ScalableColoredSvgWidget, ScalableSvgWidget
 
 
 class WidgetBuilderMixin:

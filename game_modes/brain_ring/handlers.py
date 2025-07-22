@@ -6,13 +6,13 @@ from PyQt6.QtCore import QTime, Qt
 from PyQt6.QtGui import QColor
 
 from config.enums import ColorSchemaEnum, GameTypeEnum, SoundFileEnum
-from game_modes.brain_ring.game import BrainRingGame
-from game_modes.player import Player
 from game_modes.brain_ring.enums import BrainRingGameStatusEnum
+from game_modes.brain_ring.game import BrainRingGame
 from ui.widgets.icon_widgets import CheckCircleSvgWidget, CircleSvgWidget, CrossSvgWidget
 
 
 if TYPE_CHECKING:
+    from game_modes.player import Player
     from ui.main_window import MainWindow
 
 
