@@ -194,7 +194,7 @@ def reset_settings_button_handler(obj: MainWindow):
         _reinitialize_app_data(obj)
 
 
-def _reinitialize_app_data(obj: MainWindow):
+def _reinitialize_app_data(obj: MainWindow):  # noqa: WPS213
     """Заново инициализирует виджеты и игровые окна при обновлении/сбросе игровых настроек."""
     obj.app_config = AppConfig()
     obj._populate_settings_widgets()

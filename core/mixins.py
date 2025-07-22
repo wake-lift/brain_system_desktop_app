@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import QSizePolicy
 
 from config.enums import ColorSchemaEnum
 from core.widgets import ScalableLabel
@@ -25,7 +24,9 @@ class WidgetBuilderMixin:
     ) -> ScalableSvgWidget:
         """Создает автомасштабируемый виджет svg-изображения."""
         icon_widget = widget_cls()
-        size_policy = QtWidgets.QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         size_policy.setHorizontalStretch(horizontal_stretch)
         size_policy.setVerticalStretch(0)
         size_policy.setHeightForWidth(icon_widget.sizePolicy().hasHeightForWidth())
@@ -41,7 +42,9 @@ class WidgetBuilderMixin:
     ) -> ScalableColoredSvgWidget:
         """Создает автомасштабируемый виджет svg-изображения с возможностью управления цветом."""
         colored_icon_widget = widget_cls(background_color=QColor(background_color), stroke_color=QColor(stroke_color))
-        size_policy = QtWidgets.QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         size_policy.setHorizontalStretch(horizontal_stretch)
         size_policy.setVerticalStretch(0)
         size_policy.setHeightForWidth(colored_icon_widget.sizePolicy().hasHeightForWidth())
@@ -58,7 +61,9 @@ class WidgetBuilderMixin:
     ) -> ScalableLabel:
         """Создает автомасштабируемый текстовый виджет с указанными параметрами."""
         label_widget = ScalableLabel(alignment=alignment)
-        size_policy = QtWidgets.QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         size_policy.setHorizontalStretch(horizontal_stretch)
         size_policy.setVerticalStretch(0)
         size_policy.setHeightForWidth(label_widget.sizePolicy().hasHeightForWidth())
@@ -66,7 +71,7 @@ class WidgetBuilderMixin:
         label_widget.setStyleSheet(f'color: {color};')
         if bold:
             current_style = label_widget.styleSheet()
-            new_style = current_style + ' font-weight: bold;'
+            new_style = ''.join([current_style, ' font-weight: bold;'])
             label_widget.setStyleSheet(new_style)
         label_widget.setText(text)
         return label_widget

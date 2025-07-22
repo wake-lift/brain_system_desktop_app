@@ -3,8 +3,9 @@ from typing import Self
 
 
 class StrLabelEnum(StrEnum):
-    def __new__(cls, value: str, label: str = None) -> Self:
-        """Adds additional attribute "label" for each enum element."""
+    """Класс с дополнительным атрибутом "label" у каждого элемента."""
+
+    def __new__(cls, value: str, label: str = None) -> Self:  # noqa: WPS110
         obj = str.__new__(cls, value)
         obj._value_ = value
         obj.label = label
@@ -12,6 +13,7 @@ class StrLabelEnum(StrEnum):
 
     @classmethod
     def get_item_by_label(cls, label: str) -> Self | None:
+        """Возвращает элемент на основании его атрибута "label"."""
         for member in cls:
             if member.label == label:
                 return member

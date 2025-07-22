@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QObject, QTimer, pyqtSignal
 
 
-class CustomTimer(QObject):
+class CustomTimer(QObject):  # noqa: WPS214
     """Кастомный таймер обратного отсчета на базе встроенного в Qt таймера."""
 
     timer_start = pyqtSignal()

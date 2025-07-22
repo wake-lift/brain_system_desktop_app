@@ -9,6 +9,8 @@ from PyQt6.QtGui import QColor, QFont, QPainter, QPalette
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
 
+from config.enums import ColorSchemaEnum
+
 
 if TYPE_CHECKING:
     from PyQt6.QtGui import QPaintEvent
@@ -18,7 +20,7 @@ if TYPE_CHECKING:
     from core.timer import CustomTimer
 
 
-class TimerAndSoundBaseWidget(QWidget):
+class TimerAndSoundBaseWidget(QWidget):  # noqa: WPS214, WPS230
     """Базовый виджет отрисовки игрового таймера и воспроизведения звуковых сигналов"""
 
     def __init__(
@@ -41,7 +43,7 @@ class TimerAndSoundBaseWidget(QWidget):
         self.timer.timer_reset.connect(self.handle_timer_reset)
         self.configure_widget_geometry()
 
-    def set_font_color(self, color: QColor = QColor(0, 0, 0)) -> None:
+    def set_font_color(self, color: QColor = QColor(ColorSchemaEnum.BLACK)) -> None:  # noqa: WPS404
         """Устанавливает цвет шрифта таймера."""
         palette = self.time_label.palette()
         palette.setColor(QPalette.ColorRole.WindowText, color)
@@ -112,9 +114,8 @@ class ScalableLabel(QLabel):
         self,
         bold: bool = False,
         alignment: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignCenter,
-        *args, **kwargs,
     ):
-        super().__init__(*args, **kwargs)
+        super().__init__()
         self.setAlignment(alignment)
         self.setMinimumSize(3, 3)  # минимальный размер виджета
         self.base_font_size = 3  # минимальный размер шрифта
@@ -147,7 +148,7 @@ class ScalableSvgWidget(QSvgWidget):
 
     def load_template(self) -> str:
         """Загружает svg-шаблон из файла."""
-        with open(self.template_path, 'r', encoding='utf-8') as file:
+        with open(self.template_path, 'r', encoding='utf-8') as file:  # noqa: WPS110
             return file.read()
 
     def update_svg(self):
@@ -183,9 +184,9 @@ class ScalableSvgWidget(QSvgWidget):
         else:
             target_size = widget_size
 
-        x = (widget_size.width() - target_size.width()) // 2
-        y = (widget_size.height() - target_size.height()) // 2
-        self.renderer().render(painter, QRectF(x, y, target_size.width(), target_size.height()))
+        left_coord = (widget_size.width() - target_size.width()) // 2
+        right_coord = (widget_size.height() - target_size.height()) // 2
+        self.renderer().render(painter, QRectF(left_coord, right_coord, target_size.width(), target_size.height()))
 
 
 class ScalableColoredSvgWidget(ScalableSvgWidget):
