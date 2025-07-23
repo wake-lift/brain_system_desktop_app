@@ -22,7 +22,7 @@ def select_audio_track_handler(obj: MainWindow, chosen_text: str):
 
 def start_audio_track_handler(obj: MainWindow) -> None:
     if obj.current_audio_file is None:
-        return None
+        return
     if obj.audio_player.playbackState() not in [
         QMediaPlayer.PlaybackState.PausedState, QMediaPlayer.PlaybackState.PlayingState,
     ]:
@@ -31,7 +31,7 @@ def start_audio_track_handler(obj: MainWindow) -> None:
 
 def pause_or_resume_audio_track_handler(obj: MainWindow) -> None:
     if obj.current_audio_file is None:
-        return None
+        return
     match obj.audio_player.playbackState():
         case QMediaPlayer.PlaybackState.PlayingState:
             obj.audio_player.pause()
@@ -40,14 +40,14 @@ def pause_or_resume_audio_track_handler(obj: MainWindow) -> None:
             obj.audio_player.play()
             obj.sound_panel_pause_button.setText('Pause')
         case QMediaPlayer.PlaybackState.StoppedState:
-            return None
+            return
 
 
 def stop_audio_track_handler(obj: MainWindow) -> None:
     if obj.current_audio_file is None:
-        return None
+        return
     obj.audio_player.stop()
 
 
-def set_audio_output_volume_handler(obj: MainWindow, value: int) -> None:
-    obj.audio_output.setVolume(value / 100)
+def set_audio_output_volume_handler(obj: MainWindow, volume_value: int) -> None:
+    obj.audio_output.setVolume(volume_value / 100)

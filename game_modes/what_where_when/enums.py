@@ -1,4 +1,5 @@
 from enum import StrEnum
+
 from core.enums import StrLabelEnum
 
 
