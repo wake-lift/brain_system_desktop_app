@@ -31,5 +31,5 @@ class WWWGameWindow(QMainWindow, Ui_WWWGameWindow, WidgetBuilderMixin):
         self.www_game_window_round_info_widget.setText(text)
         new_style = f'color: {color};'
         if self.www_game_window_round_info_widget.font().weight() == QFont.Weight.Bold:
-            new_style += ' font-weight: bold;'
+            new_style = ' '.join([new_style, 'font-weight: bold;'])
         self.www_game_window_round_info_widget.setStyleSheet(new_style)

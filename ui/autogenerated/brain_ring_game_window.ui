@@ -64,16 +64,16 @@
            <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>30</number>
+           <number>5</number>
           </property>
           <property name="topMargin">
-           <number>50</number>
+           <number>25</number>
           </property>
           <property name="rightMargin">
            <number>1</number>
           </property>
           <property name="bottomMargin">
-           <number>50</number>
+           <number>25</number>
           </property>
          </layout>
         </widget>
@@ -86,7 +86,23 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="brain_game_window_info_timer_widget_vertical_layout"/>
+         <layout class="QVBoxLayout" name="brain_game_window_info_timer_widget_vertical_layout">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+         </layout>
         </widget>
        </item>
        <item>
@@ -105,13 +121,13 @@
            <number>1</number>
           </property>
           <property name="topMargin">
-           <number>50</number>
+           <number>25</number>
           </property>
           <property name="rightMargin">
-           <number>30</number>
+           <number>5</number>
           </property>
           <property name="bottomMargin">
-           <number>50</number>
+           <number>25</number>
           </property>
          </layout>
         </widget>

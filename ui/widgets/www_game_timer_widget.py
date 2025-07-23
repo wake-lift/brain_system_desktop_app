@@ -1,11 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from PyQt6.QtGui import QColor, QPalette
 
 from config.enums import ColorSchemaEnum
-from core.timer import CustomTimer
 from core.widgets import TimerAndSoundBaseWidget
 
 
-class WWWGameTimerWidget(TimerAndSoundBaseWidget):
+if TYPE_CHECKING:
+    from core.timer import CustomTimer
+
+
+class WWWGameTimerWidget(TimerAndSoundBaseWidget):  # noqa: WPS214
     """Виджет таймера, отображаемый в игровом окне брейн-ринга."""
 
     def __init__(self, parent, timer: CustomTimer, font_size_ratio: float = 0.3):
@@ -18,7 +25,10 @@ class WWWGameTimerWidget(TimerAndSoundBaseWidget):
         super().resizeEvent(event)
         self.update_font_size()
 
-    def set_font_color(self, color: QColor = QColor(ColorSchemaEnum.WWW_GAME_TIMER_INITIAL)) -> None:
+    def set_font_color(
+            self,
+            color: QColor = QColor(ColorSchemaEnum.WWW_GAME_TIMER_INITIAL),  # noqa: WPS404
+    ) -> None:
         palette = self.time_label.palette()
         palette.setColor(QPalette.ColorRole.WindowText, color)
         self.time_label.setPalette(palette)

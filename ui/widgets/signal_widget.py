@@ -1,7 +1,7 @@
 from enum import StrEnum
 
+from PyQt6.QtGui import QBrush, QColor, QPainter, QPainterPath
 from PyQt6.QtWidgets import QWidget
-from PyQt6.QtGui import QPainter, QPainterPath, QBrush, QColor
 
 from config.enums import ColorSchemaEnum
 
@@ -26,20 +26,20 @@ class SignalArcWidget(QWidget):
         self.arc_radius_ratio = arc_radius_ratio
         self.arc_location = arc_location
         self.infill_color = infill_color
-        
+
     def update_infill_color(self, color: ColorSchemaEnum):
         """Устанавливает цвет заполнения."""
         self.infill_color = color
         self.update()
-        
+
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        
+
         width = self.width()
         height = self.height()
-        concavity = width * self.arc_radius_ratio 
-        
+        concavity = width * self.arc_radius_ratio
+
         path = QPainterPath()
         match self.arc_location:
             case ArcLocationEnum.LEFT:
@@ -52,7 +52,7 @@ class SignalArcWidget(QWidget):
                 path.lineTo(0, height)
                 path.lineTo(width, height)
                 path.cubicTo(width - concavity, height * 0.75, width - concavity, height * 0.25, width, 0)
-        
+
         path.closeSubpath()
         painter.fillPath(path, QBrush(QColor(self.infill_color)))
         # если нужна обводка виджета:

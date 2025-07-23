@@ -204,13 +204,16 @@ def _handle_brain_player_who_made_a_false_start(obj: MainWindow, player: Player)
         stroke_color=player.icon_stroke_color,
     )
     player_name_label = obj.brain_ring_game_window.build_label_widget(
-        text=f'{player.name}', color=ColorSchemaEnum.BRAIN_PLAYER_NAME_LABEL, bold=True,
+        text=f'{player.name}',
+        color=ColorSchemaEnum.BRAIN_PLAYER_NAME_LABEL,
+        alignment=Qt.AlignmentFlag.AlignCenter,
+        bold=True,
     )
     player_time_label = obj.brain_ring_game_window.build_label_widget(
         horizontal_stretch=30,
         text='False start',
         color=ColorSchemaEnum.BRAIN_PLAYER_TIME_LABEL,
-        alignment=Qt.AlignmentFlag.AlignLeft,
+        alignment=Qt.AlignmentFlag.AlignCenter,
         bold=True,
     )
     obj.brain_ring_game_window.populate_player_info_horizontal_layout(

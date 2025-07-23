@@ -10,8 +10,8 @@ class CheckCircleSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
-        background_color: QColor = QColor(Qt.GlobalColor.white),
-        stroke_color: QColor = QColor(Qt.GlobalColor.black),
+        background_color: QColor = QColor(Qt.GlobalColor.white),  # noqa: WPS404
+        stroke_color: QColor = QColor(Qt.GlobalColor.black),  # noqa: WPS404
     ) -> None:
         super().__init__(parent)
         self.background_color = background_color
@@ -27,8 +27,8 @@ class CircleSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
-        background_color: QColor = QColor(Qt.GlobalColor.white),
-        stroke_color: QColor = QColor(Qt.GlobalColor.black),
+        background_color: QColor = QColor(Qt.GlobalColor.white),  # noqa: WPS404
+        stroke_color: QColor = QColor(Qt.GlobalColor.black),  # noqa: WPS404
     ) -> None:
         super().__init__(parent)
         self.background_color = background_color
@@ -44,8 +44,8 @@ class CrossSvgWidget(ScalableColoredSvgWidget):
     def __init__(
         self,
         parent=None,
-        background_color: QColor = QColor(Qt.GlobalColor.white),
-        stroke_color: QColor = QColor(Qt.GlobalColor.black),
+        background_color: QColor = QColor(Qt.GlobalColor.white),  # noqa: WPS404
+        stroke_color: QColor = QColor(Qt.GlobalColor.black),  # noqa: WPS404
     ) -> None:
         super().__init__(parent)
         self.background_color = background_color

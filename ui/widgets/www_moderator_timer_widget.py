@@ -1,12 +1,20 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from PyQt6.QtGui import QColor
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 from config.enums import ColorSchemaEnum, SoundFileEnum
-from core.timer import CustomTimer
 from core.widgets import TimerAndSoundBaseWidget
 
 
-class WwwModeratorTimerWidget(TimerAndSoundBaseWidget):
+if TYPE_CHECKING:
+    from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+
+    from core.timer import CustomTimer
+
+
+class WwwModeratorTimerWidget(TimerAndSoundBaseWidget):  # noqa: WPS214
     """Виджет таймера на панели ведущего (ЧГК)."""
 
     def __init__(

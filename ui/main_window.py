@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 from pathlib import Path
-from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QKeyEvent
+from typing import TYPE_CHECKING
+
+from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
-from PyQt6.QtWidgets import QLayout, QMainWindow
+from PyQt6.QtWidgets import QMainWindow
 
 from config.config import AppConfig
+from config.enums import GameTypeEnum, SoundFileEnum
 from config.handlers import (
     black_player_check_box_handler,
     black_player_set_team_name_line_edit_handler,
@@ -30,9 +34,16 @@ from config.handlers import (
     yellow_player_check_box_handler,
     yellow_player_set_team_name_line_edit_handler,
 )
-from config.enums import GameTypeEnum, SoundFileEnum
 from core.timer import CustomTimer
+from game_modes.brain_ring.enums import BrainRingGameStatusEnum
 from game_modes.brain_ring.game import BrainRingGame
+from game_modes.brain_ring.handlers import (
+    brain_ring_moderator_reset_pause_push_button_handler,
+    brain_ring_moderator_reset_round_push_button_handler,
+    brain_ring_moderator_start_resume_push_button_handler,
+    brain_ring_player_key_press_handler,
+    brain_timer_run_out_event_handler,
+)
 from game_modes.erudite.enums import EruditeGameStatusEnum
 from game_modes.erudite.game import EruditeGame
 from game_modes.erudite.handlers import (
@@ -43,14 +54,6 @@ from game_modes.erudite.handlers import (
     erudite_timer_run_out_event_handler,
 )
 from game_modes.player import Player
-from game_modes.brain_ring.enums import BrainRingGameStatusEnum
-from game_modes.brain_ring.handlers import (
-    brain_ring_moderator_reset_pause_push_button_handler,
-    brain_ring_moderator_reset_round_push_button_handler,
-    brain_ring_moderator_start_resume_push_button_handler,
-    brain_ring_player_key_press_handler,
-    brain_timer_run_out_event_handler,
-)
 from game_modes.what_where_when.game import WWWGame
 from game_modes.what_where_when.handlers import (
     set_www_round_status_info_text,
@@ -86,7 +89,12 @@ from ui.widgets.www_moderator_timer_widget import WwwModeratorTimerWidget
 from ui.www_game_window import WWWGameWindow
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+if TYPE_CHECKING:
+    from PyQt6.QtGui import QKeyEvent
+    from PyQt6.QtWidgets import QLayout
+
+
+class MainWindow(QMainWindow, Ui_MainWindow):  # noqa: WPS214, WPS230
     """Главное игровое окно ведущего."""
 
     def __init__(self):
@@ -130,7 +138,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return GameTypeEnum.ERUDITE
         return GameTypeEnum.BRAIN_RING
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
+    def keyPressEvent(self, event: QKeyEvent) -> None:  # noqa: WPS231
         """Переопределение базового метода, отвечающего за обработку нажатий кнопок клавиатуры."""
         pressed_key: str = event.text()
         if pressed_key in {member.value for member in PlayerPressedKeyEnum}:
@@ -149,26 +157,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         elif pressed_key in {member.value for member in ModeratorPressedKeyEnum}:
             # действия при нажатии кнопки ведущим
+            moderator_pressed_key = ModeratorPressedKeyEnum(pressed_key)
             if self.game_type == GameTypeEnum.BRAIN_RING:
-                if ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.START_RESUME:
+                if moderator_pressed_key == ModeratorPressedKeyEnum.START_RESUME:
                     brain_ring_moderator_start_resume_push_button_handler(self)
-                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_PAUSE:
+                elif moderator_pressed_key == ModeratorPressedKeyEnum.RESET_PAUSE:
                     brain_ring_moderator_reset_pause_push_button_handler(self)
-                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_ROUND:
+                elif moderator_pressed_key == ModeratorPressedKeyEnum.RESET_ROUND:
                     brain_ring_moderator_reset_round_push_button_handler(self)
 
             elif self.game_type == GameTypeEnum.WWW:
-                if ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.START_RESUME:
+                if moderator_pressed_key == ModeratorPressedKeyEnum.START_RESUME:
                     www_moderator_start_resume_push_button_handler(self)
-                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_ROUND:
+                elif moderator_pressed_key == ModeratorPressedKeyEnum.RESET_ROUND:
                     www_moderator_reset_push_button_handler(self)
 
             elif self.game_type == GameTypeEnum.ERUDITE:
-                if ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.START_RESUME:
+                if moderator_pressed_key == ModeratorPressedKeyEnum.START_RESUME:
                     erudite_moderator_start_resume_push_button_handler(self)
-                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_PAUSE:
+                elif moderator_pressed_key == ModeratorPressedKeyEnum.RESET_PAUSE:
                     erudite_moderator_reset_pause_push_button_handler(self)
-                elif ModeratorPressedKeyEnum(pressed_key) == ModeratorPressedKeyEnum.RESET_ROUND:
+                elif moderator_pressed_key == ModeratorPressedKeyEnum.RESET_ROUND:
                     erudite_moderator_reset_round_push_button_handler(self)
 
     def reset_all_enabled_players(self):
@@ -195,30 +204,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.audio_player.setSource(audio_file)
         self.audio_player.play()
 
-    def set_brain_ring_info_label(
+    def set_brain_ring_info_label(  # noqa: WPS231
         self,
         player: Player,
         game_status: BrainRingGameStatusEnum,
         remaining_time: int | None = None,
         diff_time: float | None = None,
-    ):
+    ) -> None:
         """Делает видимым виджет с информацией об игроке на информационной панели ведущего (брейн-ринг)."""
         for color_box, info_label in self.MAP_BRAIN_RING_INFO_LABELS.items():
-            if color_box.isHidden():
-                color_box.setStyleSheet(f'background-color: {player.color}; border: 3px solid black;')
-                if game_status == BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED:
-                    if remaining_time is not None:
-                        info_label.setStyleSheet('font-weight: bold;')
-                        info_label.setText(f'{player.name}: {remaining_time} sec')
-                    elif diff_time is not None:
-                        info_label.setText(f'{player.name}: + {diff_time} sec')
-                else:
-                    info_label.setText(f'{player.name}: {game_status.label}')
-                color_box.show()
-                info_label.show()
-                break
+            if not color_box.isHidden():
+                continue
+            color_box.setStyleSheet(f'background-color: {player.color}; border: 3px solid black;')
+            if game_status == BrainRingGameStatusEnum.PLAYER_BUTTON_PRESSED:
+                if remaining_time is not None:
+                    info_label.setStyleSheet('font-weight: bold;')
+                    info_label.setText(f'{player.name}: {remaining_time} sec')
+                elif diff_time is not None:
+                    info_label.setText(f'{player.name}: + {diff_time} sec')
+            else:
+                info_label.setText(f'{player.name}: {game_status.label}')
+            color_box.show()
+            info_label.show()
+            break
 
-    def set_erudite_info_label(
+    def set_erudite_info_label(  # noqa: WPS231
         self,
         player: Player,
         game_status: EruditeGameStatusEnum,
@@ -227,19 +237,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ):
         """Делает видимым виджет с информацией об игроке на информационной панели ведущего (эрудитка)."""
         for color_box, info_label in self.MAP_ERUDITE_INFO_LABELS.items():
-            if color_box.isHidden():
-                color_box.setStyleSheet(f'background-color: {player.color}; border: 3px solid black;')
-                if game_status == EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED:
-                    if remaining_time is not None:
-                        info_label.setStyleSheet('font-weight: bold;')
-                        info_label.setText(f'{player.name}: {remaining_time} sec')
-                    elif diff_time is not None:
-                        info_label.setText(f'{player.name}: + {diff_time} sec')
-                else:
-                    info_label.setText(f'{player.name}: {game_status.label}')
-                color_box.show()
-                info_label.show()
-                break
+            if not color_box.isHidden():
+                continue
+            color_box.setStyleSheet(f'background-color: {player.color}; border: 3px solid black;')
+            if game_status == EruditeGameStatusEnum.PLAYER_BUTTON_PRESSED:
+                if remaining_time is not None:
+                    info_label.setStyleSheet('font-weight: bold;')
+                    info_label.setText(f'{player.name}: {remaining_time} sec')
+                elif diff_time is not None:
+                    info_label.setText(f'{player.name}: + {diff_time} sec')
+            else:
+                info_label.setText(f'{player.name}: {game_status.label}')
+            color_box.show()
+            info_label.show()
+            break
 
     def clear_brain_ring_info_labels(self):
         """Делает невидимыми виджеты на информационной панели ведущего (брейн-ринг)."""
@@ -256,8 +267,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def clear_layout(self, layout: type[QLayout]):
         """Удаляет все виджеты с указанного layout-а."""
         while layout.count():
-            item = layout.takeAt(0)
-            widget = item.widget()
+            layout_item = layout.takeAt(0)
+            widget = layout_item.widget()
             if widget:
                 widget.deleteLater()
 
@@ -268,7 +279,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.audio_player.setAudioOutput(self.audio_output)
         self.audio_output.setVolume(self.sound_panel_vertical_slider.value() / 100)
 
-        self.select_sound_combo_box.addItems(item.label for item in SoundFileEnum if 'Брейн-ринг' not in item.label)
+        self.select_sound_combo_box.addItems(
+            sound_file.label for sound_file in SoundFileEnum if 'Брейн-ринг' not in sound_file.label
+        )
         self.select_sound_combo_box.setCurrentIndex(-1)
 
         self.select_sound_combo_box.currentTextChanged.connect(
@@ -281,7 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             slot=lambda handler: set_audio_output_volume_handler(self, handler),
         )
 
-    def _populate_settings_widgets(self):
+    def _populate_settings_widgets(self):  # noqa: WPS213
         """Заполняет окно настроек виджетами."""
         if self.game_type == GameTypeEnum.BRAIN_RING:
             self.choose_www_radio_button.setChecked(False)
@@ -321,7 +334,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.settings_game_screen_tab_widget.currentChanged.connect(self._sync_game_and_moderator_control_tabs)
         self.moderator_control_panel_tab_widget.currentChanged.connect(self._sync_game_and_moderator_control_tabs)
 
-    def _setup_settings_handlers(self):
+    def _setup_settings_handlers(self):  # noqa: WPS213
         """Настраивает обработчики задания игровых настроек."""
         self.choose_brain_ring_radio_button.clicked.connect(
             slot=lambda handler: choose_brain_ring_radio_button_handler(self),
@@ -383,7 +396,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_settings_button.clicked.connect(slot=lambda handler: save_settings_button_handler(self))
         self.reset_settings_button.clicked.connect(slot=lambda handler: reset_settings_button_handler(self))
 
-    def _setup_main_window_moderator_controls(self):
+    def _setup_main_window_moderator_controls(self):  # noqa: WPS213
         """Настраивает обработчики игровых действий ведущего."""
         self.brain_ring_moderator_start_resume_push_button.clicked.connect(
             slot=lambda handler: brain_ring_moderator_start_resume_push_button_handler(self),

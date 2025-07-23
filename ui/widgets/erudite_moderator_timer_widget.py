@@ -1,12 +1,21 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from PyQt6.QtGui import QColor
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PyQt6.QtMultimedia import QMediaPlayer
 
 from config.enums import ColorSchemaEnum, SoundFileEnum
-from core.timer import CustomTimer
 from core.widgets import TimerAndSoundBaseWidget
 
 
-class EruditeModeratorTimerWidget(TimerAndSoundBaseWidget):
+if TYPE_CHECKING:
+    from PyQt6.QtMultimedia import QAudioOutput
+
+    from core.timer import CustomTimer
+
+
+class EruditeModeratorTimerWidget(TimerAndSoundBaseWidget):  # noqa: WPS214
     """Widget displayed on moderator's panel. Duplicates info on players main widget."""
 
     def __init__(

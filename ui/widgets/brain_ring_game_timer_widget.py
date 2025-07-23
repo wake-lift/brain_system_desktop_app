@@ -1,23 +1,34 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from PyQt6.QtGui import QColor, QPalette
 
 from config.enums import ColorSchemaEnum
-from core.timer import CustomTimer
 from core.widgets import TimerAndSoundBaseWidget
 
 
-class BrainRingGameTimerWidget(TimerAndSoundBaseWidget):
+if TYPE_CHECKING:
+    from core.timer import CustomTimer
+
+
+class BrainRingGameTimerWidget(TimerAndSoundBaseWidget):  # noqa: WPS214
     """Виджет таймера, отображаемый в игровом окне брейн-ринга."""
 
     def __init__(self, parent, timer: CustomTimer, font_size_ratio: float = 0.5):
         super().__init__(parent, timer, audio_player=None, audio_output=None)
         self.font_size_ratio = font_size_ratio  # отношение размера текста к размеру виджета
+        self.timer.timer_pause.connect(self.handle_timer_pause)
 
     def resizeEvent(self, event):
         """Переопределение стандартного метода, вызываемого автоматически при изменении размера окна."""
         super().resizeEvent(event)
         self.update_font_size()
 
-    def set_font_color(self, color: QColor = QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_INITIAL)) -> None:
+    def set_font_color(
+            self,
+            color: QColor = QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_INITIAL),  # noqa: WPS404
+    ) -> None:
         palette = self.time_label.palette()
         palette.setColor(QPalette.ColorRole.WindowText, color)
         self.time_label.setPalette(palette)
@@ -34,7 +45,7 @@ class BrainRingGameTimerWidget(TimerAndSoundBaseWidget):
         self.time_label.setFont(font)
 
     def update_display(self) -> None:
-        """Обновление отображения таймера"""
+        """Обновление отображения таймера."""
         if self.timer.is_run_out:
             self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_RUN_OUT))
             return
@@ -43,22 +54,26 @@ class BrainRingGameTimerWidget(TimerAndSoundBaseWidget):
         self.time_label.setText(self.format_time(self.timer.remaining_time))
 
     def handle_timer_start(self) -> None:
-        """Обработчик начала отсчета таймера"""
+        """Обработчик начала отсчета таймера."""
         self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_START))
         if self.timer.remaining_time <= 5:
             self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_5_SEC_LEFT))
 
+    def handle_timer_pause(self) -> None:
+        """Обработчик паузы таймера."""
+        self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_INITIAL))
+
     def handle_timer_run_out(self):
-        """Обработчик окончания времени"""
+        """Обработчик окончания времени."""
         self.time_label.setText(self.format_time(0))
 
     def handle_timer_reset(self) -> None:
-        """Обработчик сброса таймера"""
-        self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_START))
+        """Обработчик сброса таймера."""
+        self.set_font_color(QColor(ColorSchemaEnum.BRAIN_RING_GAME_TIMER_INITIAL))
         self.time_label.setText(self.format_time(self.timer.remaining_time))
 
     def format_time(self, seconds: float) -> str:
-        """Форматирование времени для отображения"""
+        """Форматирование времени для отображения."""
         if self.timer.remaining_time > 5:
             return f'{seconds:.0f}'
         return f'{seconds:.1f}'

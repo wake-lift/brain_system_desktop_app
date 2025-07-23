@@ -5,6 +5,7 @@ class CustomTimer(QObject):  # noqa: WPS214
     """Кастомный таймер обратного отсчета на базе встроенного в Qt таймера."""
 
     timer_start = pyqtSignal()
+    timer_pause = pyqtSignal()
     timer_run_out = pyqtSignal()
     timer_reset = pyqtSignal()
     timer_ten_seconds_left = pyqtSignal()
@@ -37,6 +38,7 @@ class CustomTimer(QObject):  # noqa: WPS214
         if self.is_running and not self.is_paused:
             self.is_paused = True
             self.timer.stop()
+            self.timer_pause.emit()
         return self._remaining_time / 1000
 
     def resume(self) -> None:
