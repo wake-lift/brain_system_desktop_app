@@ -120,17 +120,26 @@
       </property>
       <layout class="QVBoxLayout" name="erudite_game_window_players_info_widget_vertical_layout">
        <property name="spacing">
-        <number>2</number>
+        <number>1</number>
+       </property>
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
        </property>
        <property name="bottomMargin">
-        <number>8</number>
+        <number>9</number>
        </property>
        <item>
         <widget class="QWidget" name="erudite_game_player_info_widget_01" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>25</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_01_horizontal_layout">
@@ -157,7 +166,7 @@
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>15</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_02_horizontal_layout">
@@ -184,7 +193,7 @@
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>15</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_03_horizontal_layout">
@@ -211,7 +220,7 @@
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>15</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_04_horizontal_layout">
@@ -238,7 +247,7 @@
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>15</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_05_horizontal_layout">
@@ -265,7 +274,7 @@
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
+           <verstretch>15</verstretch>
           </sizepolicy>
          </property>
          <layout class="QHBoxLayout" name="erudite_game_player_info_widget_06_horizontal_layout">
