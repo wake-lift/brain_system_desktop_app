@@ -1,13 +1,25 @@
+/*
+Скетч для прошивки Arduino Pro Micro в качестве контроллера кнопок игроков.
+Чип ATmega32u4 имеет аппаратную поддержку USB 2.0, поэтому при подключении по USB
+контроллер будет восприниматься хостом как внешняя USB-клавиатура, а нажатие на игровую кнопку будет
+интерпретироваться как нажатие на кнопку клавиатуры.
+Установка дополнительных драйверов не требуется.
+
+Внимание! В данном скетче отсутствует защита от "дребезга" контактов.
+Предполагается, что эта защита реализована аппаратно в схеме контроллера.
+*/
+
 #include <Keyboard.h>
 
+// Назначаем кнопкам пины на плате Arduino
 const int buttonPinRed = 8;
 const int buttonPinGreen = 10;
-const int buttonPinBlue = 20;
-const int buttonPinYellow = 15;
+const int buttonPinBlue = 15;
+const int buttonPinYellow = 20;
 const int buttonPinWhite = 2;
 const int buttonPinBlack = 6;
 
-
+// Задаем начальное состояние кнопок
 bool lastStateWhite = LOW;
 bool lastStateBlack = LOW;
 bool lastStateRed = LOW;
@@ -16,6 +28,7 @@ bool lastStateBlue = LOW;
 bool lastStateYellow = LOW;
 
 void setup() {
+  // Настраиваем пины кнопок как вход сигнала
   pinMode(buttonPinWhite, INPUT);
   pinMode(buttonPinBlack, INPUT);
   pinMode(buttonPinRed, INPUT);
@@ -27,6 +40,7 @@ void setup() {
 }
 
 void loop() {
+  // Считываем состояние кнопок
   bool currentStateWhite = digitalRead(buttonPinWhite);
   bool currentStateBlack = digitalRead(buttonPinBlack);
   bool currentStateRed = digitalRead(buttonPinRed);
@@ -34,7 +48,7 @@ void loop() {
   bool currentStateBlue = digitalRead(buttonPinBlue);
   bool currentStateYellow = digitalRead(buttonPinYellow);
 
-
+  // Отправляем на хост сигнал нажатия кнопок
   if (currentStateRed == HIGH && lastStateRed == LOW) {
     Keyboard.press('1');
     Keyboard.release('1');
