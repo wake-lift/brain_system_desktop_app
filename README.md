@@ -35,12 +35,14 @@
 ### Упаковка приложения в portable-версию:
 - Для упаковки приложения используется библиотека `pyinstaller`.
 - Сборка portable-версии осуществляется командой:
-    - Linux: `pyinstaller main.py --add-data "assets:assets" --add-data "config.ini:."`;
-    - Windows: `pyinstaller main.py --noconsole --add-data "assets;assets" --add-data "config.ini;."`.
+    - Linux: `pyinstaller main.py --name "brain_system" --add-data "assets:assets" --add-data "config.ini:."`;
+    - Windows: `pyinstaller main.py --noconsole --icon "assets/icons/bulb.ico" --name "brain_system" --add-data "assets;assets" --add-data "config.ini;."`.
 
 В этой команде:
 - флаг `--noconsole` указывает на то, что при запуске приложения не следует запускать консоль;
 - флаг `--add-data` указывает путь хранения дополнительных не бинарных данных (изображений, аудио и файла конфигурации).
+- флаг `--icon` задает иконку исполняемого файла (только для Windows).
+- флаг `--name` определяет название исполняемого файла.
 
 Готовая сборка будет находиться в директории `dist`.
 
@@ -49,7 +51,7 @@
 
 ### Принципиальная схема контроллера и печатная плата.
 
-Электрическая схема контроллера находится в директории `heardware/schematics` и представлена в двух форматах:
+Электрическая схема контроллера находится в директории `hardware/schematics` и представлена в двух форматах:
 - `circuit_schema.odg` - для LibreOffice Draw
 - `circuit_schema.vsd` - для MS Visio
 
@@ -96,3 +98,4 @@
 ### Legal Info
 - Источник векторных изображений для svg-макетов: www.svgrepo.com.
 - Источник аудиофайлов: телевизор :tv:
+- Источник иконки приложения: https://freeicons.io/profile/75801 Hilmy Abiyyu Asad
