@@ -163,3 +163,4 @@ cython_debug/
 .zed/
 
 codebook.toml
+main.dist/
